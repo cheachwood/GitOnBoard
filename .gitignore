@@ -50,8 +50,3 @@ dist-ssr/
 *.njsproj
 *.sln
 *.sw?
-
-# Hardhat example files (si tu ne les utilises pas)
-backend/contracts/Lock.sol
-backend/test/Lock.ts
-backend/ignition/modules/Lock.ts
