@@ -1,0 +1,270 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.28;
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+// JobBoard contract for managing job postings and applications
+// Inherits from Ownable to manage ownership and access control
+// Allows users to create jobs, assign candidates, change job status, and toggle job activity
+// Emits events for job creation, updates, candidate assignments, and status toggling
+// Provides functions to retrieve job details and lists of jobs
+// Designed for a decentralized job marketplace
+// Author : Jean-Charles Félicité
+// Date   : December 2025
+// Version: 0.0.1
+contract JobBoard is Ownable {
+    // Counter for job IDs
+    // Starts from 0 and increments with each new job
+    uint32 private _jobIdCounter;
+
+    constructor() Ownable(msg.sender) {}
+
+    // Enum representing the status of a job
+    // Open: Job is open for applications
+    // InProgress: Job is currently being worked on
+    // Completed: Job has been completed
+    // Cancelled: Job has been cancelled
+    enum Status {
+        Open,
+        InProgress,
+        Completed,
+        Cancelled
+    }
+
+    // Struct representing a job posting
+    // Contains details such as ID, creation date, daily rate, status, activity status, author, candidate, and description
+    // Optimized for storage efficiency
+    // SLOT 0: id, creationDate, dailyRate, statut, isActive, author
+    // SLOT 1: candidate
+    // SLOT 2: description (dynamically sized)
+    // Total size: 50 octets + dynamic description
+    struct Job {
+        // --- SLOT 0 (Total: 30 / 32 octets used) ---
+        uint32 id; // 4 octets | de 0 à 4 294 967 295
+        uint32 creationDate; // 4 octets | Timestamp (valid until 2106)
+        uint32 dailyRate; // 2 octets | de 0 à 65 535 (TJM)
+        Status statut;
+        bool isActive; // 1 octet  | job active or not
+        address author; // 20 octets| author address
+        // --- SLOT 1 (Total: 20 / 32 octets utilisés) ---
+        address candidate; // 20 octets| freelancer address
+        // --- SLOT 2 (Dynamique) ---
+        string description; // description of the job
+    }
+
+    // Event who register a change of status for a job
+    // @param jobId The ID of the job
+    // @param newStatus The new status of the job
+    // @param author The address of the job author who made the change
+    event JobUpdated(
+        uint32 indexed jobId,
+        Status indexed newStatus,
+        address indexed author
+    );
+
+    // Event who register the creation of a new job
+    // @param jobId The ID of the new job
+    // @param author The address of the job author
+    // @param dailyRate The daily rate for the job
+    // @param description The description of the job
+    event NewJob(
+        uint32 indexed jobId,
+        address indexed author,
+        uint32 dailyRate,
+        string description
+    );
+
+    // Event who register the assignment of a candidate to a job
+    // @param jobId The ID of the job
+    // @param candidateAddress The address of the assigned candidate
+    // @param candidateName The name of the assigned candidate
+    // @param candidateEmail The email of the assigned candidate
+    event CandidateAssigned(
+        uint32 indexed jobId,
+        address indexed candidateAddress,
+        string candidateName,
+        string candidateEmail
+    );
+
+    // Event who register the toggling of a job's active status
+    // @param jobId The ID of the job
+    // @param isActive The new active status of the job
+    // @param author The address of the job author who made the change
+    event JobToggled(
+        uint32 indexed jobId,
+        bool isActive,
+        address indexed author
+    );
+
+    // Mapping from job ID to Job struct
+    mapping(uint256 => Job) jobs;
+
+    modifier onlyAuthor(uint32 _jobId) {
+        require(
+            jobs[_jobId].author == msg.sender,
+            "Only the author can perform this action"
+        );
+        _;
+    }
+
+    // Function to create a new job
+    // @param _dailyRate The daily rate for the job
+    // @param _description The description of the job
+    function createJob(uint32 _dailyRate, string memory _description) external {
+        _jobIdCounter++;
+        jobs[_jobIdCounter] = Job({
+            id: uint32(_jobIdCounter),
+            creationDate: uint32(block.timestamp),
+            dailyRate: _dailyRate,
+            statut: Status.Open,
+            isActive: true,
+            author: msg.sender,
+            candidate: address(0),
+            description: _description
+        });
+        emit NewJob(_jobIdCounter, msg.sender, _dailyRate, _description);
+    }
+
+    // Function to assign a candidate to a job
+    // @param _jobId The ID of the job
+    // @param _candidateAddress The address of the candidate
+    // @param _candidateName The name of the candidate
+    // @param _candidateEmail The email of the candidate
+    function assigneCandidate(
+        uint32 _jobId,
+        address _candidateAddress,
+        string memory _candidateName,
+        string memory _candidateEmail
+    ) external {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+        require(
+            jobs[_jobId].statut == Status.Open,
+            "Job is not open for assignment"
+        );
+        require(
+            jobs[_jobId].candidate == address(0),
+            "Candidate already assigned"
+        );
+        require(_candidateAddress != address(0), "Invalid candidate address");
+        require(
+            _candidateAddress != jobs[_jobId].author,
+            "Candidate cannot be the author"
+        );
+        require(
+            _candidateAddress != msg.sender,
+            "Sender cannot be the candidate"
+        );
+        require(
+            bytes(_candidateName).length > 0,
+            "Candidate name cannot be empty"
+        );
+        require(
+            bytes(_candidateEmail).length > 0,
+            "Candidate email cannot be empty"
+        );
+        jobs[_jobId].candidate = _candidateAddress;
+        emit CandidateAssigned(
+            _jobId,
+            _candidateAddress,
+            _candidateName,
+            _candidateEmail
+        );
+    }
+
+    // Function to get a job by ID
+    // @param _jobId The ID of the job
+    function getJob(uint32 _jobId) external view returns (Job memory) {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+        return jobs[_jobId];
+    }
+
+    // Function to get all jobs
+    function getAllJobs() external view returns (Job[] memory) {
+        Job[] memory allJobs = new Job[](_jobIdCounter);
+        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+            allJobs[i - 1] = jobs[i];
+        }
+        return allJobs;
+    }
+
+    // Function to get all active jobs
+    function getActiveJobs() external view returns (Job[] memory) {
+        uint32 activeCount = 0;
+        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+            if (jobs[i].isActive) {
+                activeCount++;
+            }
+        }
+
+        Job[] memory activeJobs = new Job[](activeCount);
+
+        uint32 currentIndex = 0;
+        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+            if (jobs[i].isActive) {
+                activeJobs[currentIndex] = jobs[i];
+                currentIndex++;
+            }
+        }
+
+        return activeJobs;
+    }
+
+    // Function to change the status of a job
+    // @param _jobId The ID of the job
+    // @param _newStatus The new status to set
+    function changeJobStatus(
+        uint32 _jobId,
+        Status _newStatus
+    ) external onlyAuthor(_jobId) {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+
+        Status currentStatus = jobs[_jobId].statut;
+        require(
+            currentStatus != Status.Completed &&
+                currentStatus != Status.Cancelled,
+            "Cannot change status of completed or cancelled job"
+        );
+
+        require(
+            currentStatus != _newStatus,
+            "Status is already set to this value"
+        );
+
+        if (_newStatus == Status.InProgress) {
+            require(
+                jobs[_jobId].candidate != address(0),
+                "Cannot set InProgress without candidate"
+            );
+        }
+
+        if (currentStatus == Status.Open) {
+            require(
+                _newStatus == Status.InProgress ||
+                    _newStatus == Status.Cancelled,
+                "From Open, can only go to InProgress or Cancelled"
+            );
+        } else if (currentStatus == Status.InProgress) {
+            require(
+                _newStatus == Status.Open ||
+                    _newStatus == Status.Completed ||
+                    _newStatus == Status.Cancelled,
+                "From InProgress, can only go to Open, Completed or Cancelled"
+            );
+        }
+
+        jobs[_jobId].statut = _newStatus;
+        emit JobUpdated(_jobId, _newStatus, msg.sender);
+    }
+
+    // Function to toggle the active status of a job
+    // @param _jobId The ID of the job
+    function toggleJobActive(uint32 _jobId) external {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+        require(
+            msg.sender == jobs[_jobId].author || msg.sender == owner(),
+            "Only author or owner can toggle job status"
+        );
+        jobs[_jobId].isActive = !jobs[_jobId].isActive;
+
+        emit JobToggled(_jobId, jobs[_jobId].isActive, msg.sender);
+    }
+}
