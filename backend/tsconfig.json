@@ -8,8 +8,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["./hardhat.config.ts", "./scripts", "./test", "./ignition"],
+  "include": ["./hardhat.config.ts", "./scripts", "./test", "./ignition", "./types"],
   "files": ["./hardhat.config.ts"]
 }
