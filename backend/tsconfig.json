@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "lib": ["es2023"],
-    "module": "ESNext",
     "target": "es2022",
+    "lib": ["es2023"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
     "outDir": "dist",
     "resolveJsonModule": true
-  }
+  },
+  "include": ["./hardhat.config.ts", "./scripts", "./test", "./ignition"],
+  "files": ["./hardhat.config.ts"]
 }
