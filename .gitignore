@@ -9,7 +9,7 @@ bundle/
 artifacts/
 cache/
 backend/artifacts/
-backend/cache/
+backend/caches/
 backend/ignition/deployments/
 
 # Typechain output
