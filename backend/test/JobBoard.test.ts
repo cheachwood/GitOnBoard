@@ -15,6 +15,10 @@ enum Status {
 /// ---------------------------- JobBoard Tests ---------------------------- ///
 /// Test suite for the JobBoard smart contract
 describe('JobBoard', () => {
+  /// ---------------------------- Fixture Deployment ---------------------------- ///
+  /// Fixture to deploy the JobBoard contract and set up test accounts
+  /// Returns the deployed contract instance and test accounts
+  /// Used in beforeEach hooks to ensure a fresh contract state for each test
   async function deployJobBoardFixture() {
     const jobBoard = await viem.deployContract('JobBoard');
     const wallets = await viem.getWalletClients();
@@ -31,6 +35,15 @@ describe('JobBoard', () => {
       const { jobBoard, owner } = await networkHelpers.loadFixture(deployJobBoardFixture);
       const contractOwner = (await jobBoard.read.owner()) as string;
       assert.strictEqual(getAddress(contractOwner), getAddress(owner.account.address));
+    });
+
+    it('should start with zero jobs', async () => {
+      // ARRANGE
+      const { jobBoard } = await networkHelpers.loadFixture(deployJobBoardFixture);
+      // ACT: Get all jobs
+      const allJobs = (await jobBoard.read.getAllJobs()) as any[];
+      // ASSERT: Verify that no jobs exist initially
+      assert.strictEqual(Number(allJobs.length), 0);
     });
   });
 

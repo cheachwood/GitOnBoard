@@ -20,8 +20,10 @@
   "scripts": {
     "dev": "hardhat node",
     "compile": "hardhat compile",
-    "test": "node --import tsx --test test/**/*.test.ts",
-    "test:watch": "node --import tsx --test --watch test/**/*.test.ts",
+    "test": "node --import tsx --test",
+    "test:all": "node --import tsx --test test/**/*.test.ts",
+    "test:only": "node --import tsx --test --test-only",
+    "test:watch": "node --import tsx --test --watch",
     "test:coverage": "node --import tsx --test --experimental-test-coverage test/**/*.test.ts",
     "deploy": "hardhat ignition deploy ignition/modules/JobBoard.ts --network localhost"
   }
