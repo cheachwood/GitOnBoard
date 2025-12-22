@@ -33,7 +33,7 @@ contract JobBoard is Ownable {
     // Struct representing a job posting
     // Contains details such as ID, creation date, daily rate, status, activity status, author, candidate, and description
     // Optimized for storage efficiency
-    // SLOT 0: id, creationDate, dailyRate, statut, isActive, author
+    // SLOT 0: id, creationDate, dailyRate, status, isActive, author
     // SLOT 1: candidate
     // SLOT 2: description (dynamically sized)
     // Total size: 50 octets + dynamic description
@@ -42,7 +42,7 @@ contract JobBoard is Ownable {
         uint32 id; // 4 octets | de 0 à 4 294 967 295
         uint32 creationDate; // 4 octets | Timestamp (valid until 2106)
         uint32 dailyRate; // 2 octets | de 0 à 65 535 (TJM)
-        Status statut;
+        Status status;
         bool isActive; // 1 octet  | job active or not
         address author; // 20 octets| author address
         // --- SLOT 1 (Total: 20 / 32 octets utilisés) ---
@@ -106,6 +106,11 @@ contract JobBoard is Ownable {
         _;
     }
 
+    modifier jobDoesExist(uint32 _jobId) {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+        _;
+    }
+
     // Function to create a new job
     // @param _dailyRate The daily rate for the job
     // @param _description The description of the job
@@ -115,7 +120,7 @@ contract JobBoard is Ownable {
             id: uint32(_jobIdCounter),
             creationDate: uint32(block.timestamp),
             dailyRate: _dailyRate,
-            statut: Status.Open,
+            status: Status.Open,
             isActive: true,
             author: msg.sender,
             candidate: address(0),
@@ -128,30 +133,22 @@ contract JobBoard is Ownable {
     // @param _jobId The ID of the job
     // @param _candidateAddress The address of the candidate
     // @param _candidateName The name of the candidate
-    // @param _candidateEmail The email of the candidate
     function assigneCandidate(
         uint32 _jobId,
-        address _candidateAddress,
         string memory _candidateName,
         string memory _candidateEmail
-    ) external {
-        require(jobs[_jobId].id != 0, "Job does not exist");
+    ) external jobDoesExist(_jobId) {
         require(
-            jobs[_jobId].statut == Status.Open,
+            jobs[_jobId].status == Status.Open,
             "Job is not open for assignment"
         );
         require(
             jobs[_jobId].candidate == address(0),
             "Candidate already assigned"
         );
-        require(_candidateAddress != address(0), "Invalid candidate address");
         require(
-            _candidateAddress != jobs[_jobId].author,
-            "Candidate cannot be the author"
-        );
-        require(
-            _candidateAddress != msg.sender,
-            "Sender cannot be the candidate"
+            msg.sender != jobs[_jobId].author,
+            "Cannot apply to your own job"
         );
         require(
             bytes(_candidateName).length > 0,
@@ -161,10 +158,11 @@ contract JobBoard is Ownable {
             bytes(_candidateEmail).length > 0,
             "Candidate email cannot be empty"
         );
-        jobs[_jobId].candidate = _candidateAddress;
+
+        jobs[_jobId].candidate = msg.sender;
         emit CandidateAssigned(
             _jobId,
-            _candidateAddress,
+            msg.sender,
             _candidateName,
             _candidateEmail
         );
@@ -172,8 +170,9 @@ contract JobBoard is Ownable {
 
     // Function to get a job by ID
     // @param _jobId The ID of the job
-    function getJob(uint32 _jobId) external view returns (Job memory) {
-        require(jobs[_jobId].id != 0, "Job does not exist");
+    function getJob(
+        uint32 _jobId
+    ) external view jobDoesExist(_jobId) returns (Job memory) {
         return jobs[_jobId];
     }
 
@@ -214,10 +213,8 @@ contract JobBoard is Ownable {
     function changeJobStatus(
         uint32 _jobId,
         Status _newStatus
-    ) external onlyAuthor(_jobId) {
-        require(jobs[_jobId].id != 0, "Job does not exist");
-
-        Status currentStatus = jobs[_jobId].statut;
+    ) external onlyAuthor(_jobId) jobDoesExist(_jobId) {
+        Status currentStatus = jobs[_jobId].status;
         require(
             currentStatus != Status.Completed &&
                 currentStatus != Status.Cancelled,
@@ -251,14 +248,13 @@ contract JobBoard is Ownable {
             );
         }
 
-        jobs[_jobId].statut = _newStatus;
+        jobs[_jobId].status = _newStatus;
         emit JobUpdated(_jobId, _newStatus, msg.sender);
     }
 
     // Function to toggle the active status of a job
     // @param _jobId The ID of the job
-    function toggleJobActive(uint32 _jobId) external {
-        require(jobs[_jobId].id != 0, "Job does not exist");
+    function toggleJobActive(uint32 _jobId) external jobDoesExist(_jobId) {
         require(
             msg.sender == jobs[_jobId].author || msg.sender == owner(),
             "Only author or owner can toggle job status"
