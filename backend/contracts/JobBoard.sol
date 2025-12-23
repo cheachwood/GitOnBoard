@@ -213,7 +213,7 @@ contract JobBoard is Ownable {
     function changeJobStatus(
         uint32 _jobId,
         Status _newStatus
-    ) external onlyAuthor(_jobId) jobDoesExist(_jobId) {
+    ) external jobDoesExist(_jobId) onlyAuthor(_jobId) {
         Status currentStatus = jobs[_jobId].status;
         require(
             currentStatus != Status.Completed &&

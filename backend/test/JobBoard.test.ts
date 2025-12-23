@@ -615,4 +615,157 @@ describe('JobBoard', () => {
       assert.strictEqual(allJobs1[0].isActive, false);
     });
   });
+
+  describe('changeJobStatus ', () => {
+    it('should change status from Open to InProgress', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      // ACT: Create 1 inactive job
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+      await jobBoard.write.changeJobStatus([1, Status.InProgress]);
+
+      // ACT: Retrieve the job
+      const job = (await jobBoard.read.getJob([1])) as any;
+      // ASSERT: Verify that job status is InProgress
+      assert.strictEqual(job.status, Status.InProgress);
+    });
+
+    it('should change status from Open to Cancelled', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      // ACT: Create 1 inactive job
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+      await jobBoard.write.changeJobStatus([1, Status.Cancelled]);
+
+      // ACT: Retrieve the job
+      const job = (await jobBoard.read.getJob([1])) as any;
+      // ASSERT: Verify that job status is Cancelled
+      assert.strictEqual(job.status, Status.Cancelled);
+    });
+
+    it('should change status from InProgress to Completed', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      // ACT: Create 1 inactive job
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+      await jobBoard.write.changeJobStatus([1, Status.InProgress]);
+      await jobBoard.write.changeJobStatus([1, Status.Completed]);
+
+      // ACT: Retrieve the job
+      const job = (await jobBoard.read.getJob([1])) as any;
+      // ASSERT: Verify that job status is Completed
+      assert.strictEqual(job.status, Status.Completed);
+    });
+
+    it('should change status from InProgress to Open', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      // ACT: Create 1 inactive job
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+      await jobBoard.write.changeJobStatus([1, Status.InProgress]);
+      await jobBoard.write.changeJobStatus([1, Status.Open]);
+
+      // ACT: Retrieve the job
+      const job = (await jobBoard.read.getJob([1])) as any;
+      // ASSERT: Verify that job status is Open
+      assert.strictEqual(job.status, Status.Open);
+    });
+
+    it('should emit JobUpdated event', async () => {
+      // ARRANGE
+      const { jobBoard, owner, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      // ACT: Create 1 inactive job
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+
+      // ASSERT: emit JobUpdated event when changing status
+      await viem.assertions.emitWithArgs(jobBoard.write.changeJobStatus([1, Status.InProgress]), jobBoard, 'JobUpdated', [1, Status.InProgress, getAddress(owner.account.address)]);
+    });
+
+    it('should revert when job does not exist', async () => {
+      // ARRANGE
+      const { jobBoard, owner } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      // ASSERT:  revert that job with id 999 does not exist
+      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([999, Status.InProgress], { account: owner.account }), 'Job does not exist');
+    });
+
+    it('should revert when not job author', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      await jobBoard.write.createJob([500, 'Job 1']);
+
+      // ASSERT:  revert when a user is not the author of the job
+      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress], { account: user1.account }), 'Only the author can perform this action');
+    });
+
+    it('should revert when trying to change status of a Completed job', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+      await jobBoard.write.changeJobStatus([1, Status.InProgress]);
+      await jobBoard.write.changeJobStatus([1, Status.Completed]);
+
+      // ASSERT:  revert when trying to change status of a Completed job
+      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Cannot change status of completed or cancelled job');
+    });
+
+    it('should revert when trying to change status of a Cancelled job', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+      await jobBoard.write.changeJobStatus([1, Status.InProgress]);
+      await jobBoard.write.changeJobStatus([1, Status.Cancelled]);
+
+      // ASSERT:  revert when trying to change status of a Cancelled job
+      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Cannot change status of completed or cancelled job');
+    });
+
+    it('should revert when setting same status', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+      await jobBoard.write.changeJobStatus([1, Status.InProgress]);
+
+      // ASSERT:  revert when trying to change to the same status
+      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Status is already set to this value');
+    });
+
+    it('should revert when changing Open to InProgress without candidate', async () => {
+      // ARRANGE
+      const { jobBoard } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      await jobBoard.write.createJob([500, 'Job 1']);
+
+      // ASSERT:  revert when trying to change to the same status
+      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Cannot set InProgress without candidate');
+    });
+
+    it('should revert when changing Open to Completed', async () => {
+      // ARRANGE
+      const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
+
+      await jobBoard.write.createJob([500, 'Job 1']);
+      await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
+
+      // ASSERT:  revert when trying to change to the same status
+      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.Completed]), 'From Open, can only go to InProgress or Cancelled');
+    });
+  });
 });
