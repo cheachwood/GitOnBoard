@@ -2,6 +2,22 @@
 pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// ========== Custom Errors ==========
+error JobDoesNotExist();
+error CandidateNameEmpty();
+error CandidateEmailEmpty();
+error InvalidCandidateAddress();
+error CandidateAlreadyAssigned();
+error JobNotOpenForAssignment();
+error CannotChangeCompletedOrCancelledJob();
+error StatusAlreadySet();
+error CannotSetInProgressWithoutCandidate();
+error InvalidTransitionFromOpen();
+error InvalidTransitionFromInProgress();
+error OnlyAuthorOrOwnerCanToggle();
+error CannotApplyToOwnJob();
+error OnlyAuthorCanPerformAction();
+
 // JobBoard contract for managing job postings and applications
 // Inherits from Ownable to manage ownership and access control
 // Allows users to create jobs, assign candidates, change job status, and toggle job activity
@@ -42,7 +58,7 @@ contract JobBoard is Ownable {
         uint32 id; // 4 octets | de 0 à 4 294 967 295
         uint32 creationDate; // 4 octets | Timestamp (valid until 2106)
         uint32 dailyRate; // 2 octets | de 0 à 65 535 (TJM)
-        Status status;
+        Status status; // 1 octet  | job status
         bool isActive; // 1 octet  | job active or not
         address author; // 20 octets| author address
         // --- SLOT 1 (Total: 20 / 32 octets utilisés) ---
@@ -99,22 +115,30 @@ contract JobBoard is Ownable {
     mapping(uint256 => Job) jobs;
 
     modifier onlyAuthor(uint32 _jobId) {
-        require(
-            jobs[_jobId].author == msg.sender,
-            "Only the author can perform this action"
-        );
+        if (jobs[_jobId].author != msg.sender)
+            revert OnlyAuthorCanPerformAction();
         _;
     }
 
     modifier jobDoesExist(uint32 _jobId) {
-        require(jobs[_jobId].id != 0, "Job does not exist");
+        if (jobs[_jobId].id == 0) revert JobDoesNotExist();
+        _;
+    }
+
+    modifier onlyAuthorOrOwner(uint32 _jobId) {
+        if (msg.sender != jobs[_jobId].author && msg.sender != owner()) {
+            revert OnlyAuthorOrOwnerCanToggle();
+        }
         _;
     }
 
     // Function to create a new job
     // @param _dailyRate The daily rate for the job
     // @param _description The description of the job
-    function createJob(uint32 _dailyRate, string memory _description) external {
+    function createJob(
+        uint32 _dailyRate,
+        string calldata _description
+    ) external {
         _jobIdCounter++;
         jobs[_jobIdCounter] = Job({
             id: uint32(_jobIdCounter),
@@ -135,29 +159,24 @@ contract JobBoard is Ownable {
     // @param _candidateName The name of the candidate
     function assigneCandidate(
         uint32 _jobId,
-        string memory _candidateName,
-        string memory _candidateEmail
+        string calldata _candidateName,
+        string calldata _candidateEmail
     ) external jobDoesExist(_jobId) {
-        require(
-            jobs[_jobId].status == Status.Open,
-            "Job is not open for assignment"
-        );
-        require(
-            jobs[_jobId].candidate == address(0),
-            "Candidate already assigned"
-        );
-        require(
-            msg.sender != jobs[_jobId].author,
-            "Cannot apply to your own job"
-        );
-        require(
-            bytes(_candidateName).length > 0,
-            "Candidate name cannot be empty"
-        );
-        require(
-            bytes(_candidateEmail).length > 0,
-            "Candidate email cannot be empty"
-        );
+        if (jobs[_jobId].status != Status.Open) {
+            revert JobNotOpenForAssignment();
+        }
+        if (jobs[_jobId].candidate != address(0)) {
+            revert CandidateAlreadyAssigned();
+        }
+        if (msg.sender == jobs[_jobId].author) {
+            revert CannotApplyToOwnJob();
+        }
+        if (bytes(_candidateName).length == 0) {
+            revert CandidateNameEmpty();
+        }
+        if (bytes(_candidateEmail).length == 0) {
+            revert CandidateEmailEmpty();
+        }
 
         jobs[_jobId].candidate = msg.sender;
         emit CandidateAssigned(
@@ -179,8 +198,11 @@ contract JobBoard is Ownable {
     // Function to get all jobs
     function getAllJobs() external view returns (Job[] memory) {
         Job[] memory allJobs = new Job[](_jobIdCounter);
-        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+        for (uint32 i = 1; i <= _jobIdCounter; ) {
             allJobs[i - 1] = jobs[i];
+            unchecked {
+                i++;
+            }
         }
         return allJobs;
     }
@@ -188,9 +210,12 @@ contract JobBoard is Ownable {
     // Function to get all active jobs
     function getActiveJobs() external view returns (Job[] memory) {
         uint32 activeCount = 0;
-        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+        for (uint32 i = 1; i <= _jobIdCounter; ) {
             if (jobs[i].isActive) {
                 activeCount++;
+            }
+            unchecked {
+                i++;
             }
         }
 
@@ -215,37 +240,40 @@ contract JobBoard is Ownable {
         Status _newStatus
     ) external jobDoesExist(_jobId) onlyAuthor(_jobId) {
         Status currentStatus = jobs[_jobId].status;
-        require(
-            currentStatus != Status.Completed &&
-                currentStatus != Status.Cancelled,
-            "Cannot change status of completed or cancelled job"
-        );
+        if (
+            currentStatus == Status.Completed ||
+            currentStatus == Status.Cancelled
+        ) {
+            revert CannotChangeCompletedOrCancelledJob();
+        }
+        if (currentStatus == _newStatus) {
+            revert StatusAlreadySet();
+        }
 
-        require(
-            currentStatus != _newStatus,
-            "Status is already set to this value"
-        );
-
-        if (_newStatus == Status.InProgress) {
-            require(
-                jobs[_jobId].candidate != address(0),
-                "Cannot set InProgress without candidate"
-            );
+        if (
+            _newStatus == Status.InProgress &&
+            jobs[_jobId].candidate == address(0)
+        ) {
+            revert CannotSetInProgressWithoutCandidate();
         }
 
         if (currentStatus == Status.Open) {
-            require(
-                _newStatus == Status.InProgress ||
-                    _newStatus == Status.Cancelled,
-                "From Open, can only go to InProgress or Cancelled"
-            );
+            // "Si le nouveau statut n'est PAS InProgress ET n'est PAS Cancelled, alors c'est invalide"
+            if (
+                _newStatus != Status.InProgress &&
+                _newStatus != Status.Cancelled
+            ) {
+                revert InvalidTransitionFromOpen();
+            }
         } else if (currentStatus == Status.InProgress) {
-            require(
-                _newStatus == Status.Open ||
-                    _newStatus == Status.Completed ||
-                    _newStatus == Status.Cancelled,
-                "From InProgress, can only go to Open, Completed or Cancelled"
-            );
+            // "Si le nouveau statut n'est PAS Open ET n'est PAS Completed ET n'est PAS Cancelled..."
+            if (
+                _newStatus != Status.Open &&
+                _newStatus != Status.Completed &&
+                _newStatus != Status.Cancelled
+            ) {
+                revert InvalidTransitionFromInProgress();
+            }
         }
 
         jobs[_jobId].status = _newStatus;
@@ -254,11 +282,9 @@ contract JobBoard is Ownable {
 
     // Function to toggle the active status of a job
     // @param _jobId The ID of the job
-    function toggleJobActive(uint32 _jobId) external jobDoesExist(_jobId) {
-        require(
-            msg.sender == jobs[_jobId].author || msg.sender == owner(),
-            "Only author or owner can toggle job status"
-        );
+    function toggleJobActive(
+        uint32 _jobId
+    ) external jobDoesExist(_jobId) onlyAuthorOrOwner(_jobId) {
         jobs[_jobId].isActive = !jobs[_jobId].isActive;
 
         emit JobToggled(_jobId, jobs[_jobId].isActive, msg.sender);
