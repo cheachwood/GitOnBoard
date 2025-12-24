@@ -135,7 +135,10 @@ contract JobBoard is Ownable {
     // Function to create a new job
     // @param _dailyRate The daily rate for the job
     // @param _description The description of the job
-    function createJob(uint32 _dailyRate, string memory _description) external {
+    function createJob(
+        uint32 _dailyRate,
+        string calldata _description
+    ) external {
         _jobIdCounter++;
         jobs[_jobIdCounter] = Job({
             id: uint32(_jobIdCounter),
@@ -156,8 +159,8 @@ contract JobBoard is Ownable {
     // @param _candidateName The name of the candidate
     function assigneCandidate(
         uint32 _jobId,
-        string memory _candidateName,
-        string memory _candidateEmail
+        string calldata _candidateName,
+        string calldata _candidateEmail
     ) external jobDoesExist(_jobId) {
         if (jobs[_jobId].status != Status.Open) {
             revert JobNotOpenForAssignment();
@@ -195,8 +198,11 @@ contract JobBoard is Ownable {
     // Function to get all jobs
     function getAllJobs() external view returns (Job[] memory) {
         Job[] memory allJobs = new Job[](_jobIdCounter);
-        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+        for (uint32 i = 1; i <= _jobIdCounter; ) {
             allJobs[i - 1] = jobs[i];
+            unchecked {
+                i++;
+            }
         }
         return allJobs;
     }
@@ -204,9 +210,12 @@ contract JobBoard is Ownable {
     // Function to get all active jobs
     function getActiveJobs() external view returns (Job[] memory) {
         uint32 activeCount = 0;
-        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+        for (uint32 i = 1; i <= _jobIdCounter; ) {
             if (jobs[i].isActive) {
                 activeCount++;
+            }
+            unchecked {
+                i++;
             }
         }
 
