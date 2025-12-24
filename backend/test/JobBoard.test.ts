@@ -230,7 +230,7 @@ describe('JobBoard', () => {
       await jobBoard.write.createJob([500, 'Job 1']);
 
       //  ASSERT: Calling assigneCandidate with an empty name
-      await viem.assertions.revertWith(jobBoard.write.assigneCandidate([1, '', 'Jean@gmail.com'], { account: user1.account }), 'Candidate name cannot be empty');
+      await viem.assertions.revertWithCustomError(jobBoard.write.assigneCandidate([1, '', 'Jean@gmail.com'], { account: user1.account }), jobBoard, 'CandidateNameEmpty');
     });
 
     it('should revert when candidate email is empty', async () => {
@@ -241,7 +241,7 @@ describe('JobBoard', () => {
       await jobBoard.write.createJob([500, 'Job 1']);
 
       //  ASSERT: Calling assigneCandidate with an empty email
-      await viem.assertions.revertWith(jobBoard.write.assigneCandidate([1, 'Jean', ''], { account: user1.account }), 'Candidate email cannot be empty');
+      await viem.assertions.revertWithCustomError(jobBoard.write.assigneCandidate([1, 'Jean', ''], { account: user1.account }), jobBoard, 'CandidateEmailEmpty');
     });
 
     it('should revert when job does not exist with id 999', async () => {
@@ -249,7 +249,7 @@ describe('JobBoard', () => {
       const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
 
       // Calling assigneCandidate to a job with id 999
-      await viem.assertions.revertWith(jobBoard.read.getJob([999]), 'Job does not exist');
+      await viem.assertions.revertWithCustomError(jobBoard.read.getJob([999]), jobBoard, 'JobDoesNotExist');
     });
 
     it('should revert when job is not open', async () => {
@@ -261,7 +261,7 @@ describe('JobBoard', () => {
       jobBoard.write.changeJobStatus([1, Status.Cancelled]);
 
       //  ASSERT: Calling assigneCandidate when Status is InProgress
-      await viem.assertions.revertWith(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), 'Job is not open for assignment');
+      await viem.assertions.revertWithCustomError(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), jobBoard, 'JobNotOpenForAssignment');
     });
 
     it('should revert when candidate already assigned', async () => {
@@ -273,7 +273,7 @@ describe('JobBoard', () => {
       await jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account });
 
       //  ASSERT: Calling assigneCandidate when Status is InProgress
-      await viem.assertions.revertWith(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), 'Candidate already assigned');
+      await viem.assertions.revertWithCustomError(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), jobBoard, 'CandidateAlreadyAssigned');
     });
 
     it('should revert when trying to apply to own job', async () => {
@@ -284,7 +284,7 @@ describe('JobBoard', () => {
       await jobBoard.write.createJob([500, 'Job 1'], { account: user1.account });
 
       //  ASSERT: Calling assigneCandidate when trying to apply to own job
-      await viem.assertions.revertWith(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), 'Cannot apply to your own job');
+      await viem.assertions.revertWithCustomError(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), jobBoard, 'CannotApplyToOwnJob');
     });
   });
 
@@ -296,7 +296,7 @@ describe('JobBoard', () => {
       const { jobBoard, user1 } = await networkHelpers.loadFixture(deployJobBoardFixture);
 
       // ASSERT: Calling getJob with a non-existing job ID
-      await viem.assertions.revertWith(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), 'Job does not exist');
+      await viem.assertions.revertWithCustomError(jobBoard.write.assigneCandidate([1, 'Jean', 'Jean@gmail.com'], { account: user1.account }), jobBoard, 'JobDoesNotExist');
     });
   });
 
@@ -551,7 +551,7 @@ describe('JobBoard', () => {
       const { jobBoard, owner } = await networkHelpers.loadFixture(deployJobBoardFixture);
 
       // ASSERT: Verify tthat a job is not existing
-      await viem.assertions.revertWith(jobBoard.write.toggleJobActive([999], { account: owner.account }), 'Job does not exist');
+      await viem.assertions.revertWithCustomError(jobBoard.write.toggleJobActive([999], { account: owner.account }), jobBoard, 'JobDoesNotExist');
     });
 
     it('should allow owner to toggle any job', async () => {
@@ -591,12 +591,12 @@ describe('JobBoard', () => {
       // ACT: user1 is creating a job
       await jobBoard.write.createJob([500, 'Job 1'], { account: user1.account });
       // ASSERT: user2 is trying to toggle user1's job (should fail)
-      await viem.assertions.revertWith(jobBoard.write.toggleJobActive([1], { account: user2.account }), 'Only author or owner can toggle job status');
+      await viem.assertions.revertWithCustomError(jobBoard.write.toggleJobActive([1], { account: user2.account }), jobBoard, 'OnlyAuthorOrOwnerCanToggle');
 
       // ACT: owner is creating a job
       await jobBoard.write.createJob([500, 'Job 2']);
       // ASSERT: user2 is trying to toggle user1's job (should fail)
-      await viem.assertions.revertWith(jobBoard.write.toggleJobActive([2], { account: user2.account }), 'Only author or owner can toggle job status');
+      await viem.assertions.revertWithCustomError(jobBoard.write.toggleJobActive([2], { account: user2.account }), jobBoard, 'OnlyAuthorOrOwnerCanToggle');
     });
 
     it('should allow multiple toggles', async () => {
@@ -696,7 +696,7 @@ describe('JobBoard', () => {
       const { jobBoard, owner } = await networkHelpers.loadFixture(deployJobBoardFixture);
 
       // ASSERT:  revert that job with id 999 does not exist
-      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([999, Status.InProgress], { account: owner.account }), 'Job does not exist');
+      await viem.assertions.revertWithCustomError(jobBoard.write.changeJobStatus([999, Status.InProgress], { account: owner.account }), jobBoard, 'JobDoesNotExist');
     });
 
     it('should revert when not job author', async () => {
@@ -706,7 +706,7 @@ describe('JobBoard', () => {
       await jobBoard.write.createJob([500, 'Job 1']);
 
       // ASSERT:  revert when a user is not the author of the job
-      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress], { account: user1.account }), 'Only the author can perform this action');
+      await viem.assertions.revertWithCustomError(jobBoard.write.changeJobStatus([1, Status.InProgress], { account: user1.account }), jobBoard, 'OnlyAuthorCanPerformAction');
     });
 
     it('should revert when trying to change status of a Completed job', async () => {
@@ -719,7 +719,7 @@ describe('JobBoard', () => {
       await jobBoard.write.changeJobStatus([1, Status.Completed]);
 
       // ASSERT:  revert when trying to change status of a Completed job
-      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Cannot change status of completed or cancelled job');
+      await viem.assertions.revertWithCustomError(jobBoard.write.changeJobStatus([1, Status.InProgress]), jobBoard, 'CannotChangeCompletedOrCancelledJob');
     });
 
     it('should revert when trying to change status of a Cancelled job', async () => {
@@ -732,7 +732,7 @@ describe('JobBoard', () => {
       await jobBoard.write.changeJobStatus([1, Status.Cancelled]);
 
       // ASSERT:  revert when trying to change status of a Cancelled job
-      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Cannot change status of completed or cancelled job');
+      await viem.assertions.revertWithCustomError(jobBoard.write.changeJobStatus([1, Status.InProgress]), jobBoard, 'CannotChangeCompletedOrCancelledJob');
     });
 
     it('should revert when setting same status', async () => {
@@ -744,7 +744,7 @@ describe('JobBoard', () => {
       await jobBoard.write.changeJobStatus([1, Status.InProgress]);
 
       // ASSERT:  revert when trying to change to the same status
-      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Status is already set to this value');
+      await viem.assertions.revertWithCustomError(jobBoard.write.changeJobStatus([1, Status.InProgress]), jobBoard, 'StatusAlreadySet');
     });
 
     it('should revert when changing Open to InProgress without candidate', async () => {
@@ -754,7 +754,7 @@ describe('JobBoard', () => {
       await jobBoard.write.createJob([500, 'Job 1']);
 
       // ASSERT:  revert when trying to change to the same status
-      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.InProgress]), 'Cannot set InProgress without candidate');
+      await viem.assertions.revertWithCustomError(jobBoard.write.changeJobStatus([1, Status.InProgress]), jobBoard, 'CannotSetInProgressWithoutCandidate');
     });
 
     it('should revert when changing Open to Completed', async () => {
@@ -765,7 +765,7 @@ describe('JobBoard', () => {
       await jobBoard.write.assigneCandidate([1, 'Jean', 'jean@example.com'], { account: user1.account });
 
       // ASSERT:  revert when trying to change to the same status
-      await viem.assertions.revertWith(jobBoard.write.changeJobStatus([1, Status.Completed]), 'From Open, can only go to InProgress or Cancelled');
+      await viem.assertions.revertWithCustomError(jobBoard.write.changeJobStatus([1, Status.Completed]), jobBoard, 'InvalidTransitionFromOpen');
     });
   });
 });
