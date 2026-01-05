@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.28;
+pragma solidity 0.8.28;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 // ========== Custom Errors ==========
@@ -114,85 +114,85 @@ contract JobBoard is Ownable {
     // Mapping from job ID to Job struct
     mapping(uint256 => Job) jobs;
 
-    modifier onlyAuthor(uint32 _jobId) {
-        if (jobs[_jobId].author != msg.sender)
+    modifier onlyAuthor(uint32 jobId) {
+        if (jobs[jobId].author != msg.sender)
             revert OnlyAuthorCanPerformAction();
         _;
     }
 
-    modifier jobDoesExist(uint32 _jobId) {
-        if (jobs[_jobId].id == 0) revert JobDoesNotExist();
+    modifier jobDoesExist(uint32 jobId) {
+        if (jobs[jobId].id == 0) revert JobDoesNotExist();
         _;
     }
 
-    modifier onlyAuthorOrOwner(uint32 _jobId) {
-        if (msg.sender != jobs[_jobId].author && msg.sender != owner()) {
+    modifier onlyAuthorOrOwner(uint32 jobId) {
+        if (msg.sender != jobs[jobId].author && msg.sender != owner()) {
             revert OnlyAuthorOrOwnerCanToggle();
         }
         _;
     }
 
     // Function to create a new job
-    // @param _dailyRate The daily rate for the job
-    // @param _description The description of the job
+    // @param dailyRate The daily rate for the job
+    // @param description The description of the job
     function createJob(
-        uint32 _dailyRate,
-        string calldata _description
+        uint32 dailyRate,
+        string calldata description
     ) external {
         _jobIdCounter++;
         jobs[_jobIdCounter] = Job({
             id: uint32(_jobIdCounter),
             creationDate: uint32(block.timestamp),
-            dailyRate: _dailyRate,
+            dailyRate: dailyRate,
             status: Status.Open,
             isActive: true,
             author: msg.sender,
             candidate: address(0),
-            description: _description
+            description: description
         });
-        emit NewJob(_jobIdCounter, msg.sender, _dailyRate, _description);
+        emit NewJob(_jobIdCounter, msg.sender, dailyRate, description);
     }
 
     // Function to assign a candidate to a job
     // @param _jobId The ID of the job
     // @param _candidateAddress The address of the candidate
-    // @param _candidateName The name of the candidate
+    // @param candidateName The name of the candidate
     function assigneCandidate(
-        uint32 _jobId,
-        string calldata _candidateName,
-        string calldata _candidateEmail
-    ) external jobDoesExist(_jobId) {
-        if (jobs[_jobId].status != Status.Open) {
+        uint32 jobId,
+        string calldata candidateName,
+        string calldata candidateEmail
+    ) external jobDoesExist(jobId) {
+        if (jobs[jobId].status != Status.Open) {
             revert JobNotOpenForAssignment();
         }
-        if (jobs[_jobId].candidate != address(0)) {
+        if (jobs[jobId].candidate != address(0)) {
             revert CandidateAlreadyAssigned();
         }
-        if (msg.sender == jobs[_jobId].author) {
+        if (msg.sender == jobs[jobId].author) {
             revert CannotApplyToOwnJob();
         }
-        if (bytes(_candidateName).length == 0) {
+        if (bytes(candidateName).length == 0) {
             revert CandidateNameEmpty();
         }
-        if (bytes(_candidateEmail).length == 0) {
+        if (bytes(candidateEmail).length == 0) {
             revert CandidateEmailEmpty();
         }
 
-        jobs[_jobId].candidate = msg.sender;
+        jobs[jobId].candidate = msg.sender;
         emit CandidateAssigned(
-            _jobId,
+            jobId,
             msg.sender,
-            _candidateName,
-            _candidateEmail
+            candidateName,
+            candidateEmail
         );
     }
 
     // Function to get a job by ID
     // @param _jobId The ID of the job
     function getJob(
-        uint32 _jobId
-    ) external view jobDoesExist(_jobId) returns (Job memory) {
-        return jobs[_jobId];
+        uint32 jobId
+    ) external view jobDoesExist(jobId) returns (Job memory) {
+        return jobs[jobId];
     }
 
     // Function to get all jobs
@@ -222,10 +222,13 @@ contract JobBoard is Ownable {
         Job[] memory activeJobs = new Job[](activeCount);
 
         uint32 currentIndex = 0;
-        for (uint32 i = 1; i <= _jobIdCounter; i++) {
+        for (uint32 i = 1; i <= _jobIdCounter; ) {
             if (jobs[i].isActive) {
                 activeJobs[currentIndex] = jobs[i];
                 currentIndex++;
+            }
+            unchecked {
+                i++;
             }
         }
 
@@ -234,25 +237,25 @@ contract JobBoard is Ownable {
 
     // Function to change the status of a job
     // @param _jobId The ID of the job
-    // @param _newStatus The new status to set
+    // @param newStatus The new status to set
     function changeJobStatus(
-        uint32 _jobId,
-        Status _newStatus
-    ) external jobDoesExist(_jobId) onlyAuthor(_jobId) {
-        Status currentStatus = jobs[_jobId].status;
+        uint32 jobId,
+        Status newStatus
+    ) external jobDoesExist(jobId) onlyAuthor(jobId) {
+        Status currentStatus = jobs[jobId].status;
         if (
             currentStatus == Status.Completed ||
             currentStatus == Status.Cancelled
         ) {
             revert CannotChangeCompletedOrCancelledJob();
         }
-        if (currentStatus == _newStatus) {
+        if (currentStatus == newStatus) {
             revert StatusAlreadySet();
         }
 
         if (
-            _newStatus == Status.InProgress &&
-            jobs[_jobId].candidate == address(0)
+            newStatus == Status.InProgress &&
+            jobs[jobId].candidate == address(0)
         ) {
             revert CannotSetInProgressWithoutCandidate();
         }
@@ -260,33 +263,33 @@ contract JobBoard is Ownable {
         if (currentStatus == Status.Open) {
             // "Si le nouveau statut n'est PAS InProgress ET n'est PAS Cancelled, alors c'est invalide"
             if (
-                _newStatus != Status.InProgress &&
-                _newStatus != Status.Cancelled
+                newStatus != Status.InProgress &&
+                newStatus != Status.Cancelled
             ) {
                 revert InvalidTransitionFromOpen();
             }
         } else if (currentStatus == Status.InProgress) {
             // "Si le nouveau statut n'est PAS Open ET n'est PAS Completed ET n'est PAS Cancelled..."
             if (
-                _newStatus != Status.Open &&
-                _newStatus != Status.Completed &&
-                _newStatus != Status.Cancelled
+                newStatus != Status.Open &&
+                newStatus != Status.Completed &&
+                newStatus != Status.Cancelled
             ) {
                 revert InvalidTransitionFromInProgress();
             }
         }
 
-        jobs[_jobId].status = _newStatus;
-        emit JobUpdated(_jobId, _newStatus, msg.sender);
+        jobs[jobId].status = newStatus;
+        emit JobUpdated(jobId, newStatus, msg.sender);
     }
 
     // Function to toggle the active status of a job
     // @param _jobId The ID of the job
     function toggleJobActive(
-        uint32 _jobId
-    ) external jobDoesExist(_jobId) onlyAuthorOrOwner(_jobId) {
-        jobs[_jobId].isActive = !jobs[_jobId].isActive;
+        uint32 jobId
+    ) external jobDoesExist(jobId) onlyAuthorOrOwner(jobId) {
+        jobs[jobId].isActive = !jobs[jobId].isActive;
 
-        emit JobToggled(_jobId, jobs[_jobId].isActive, msg.sender);
+        emit JobToggled(jobId, jobs[jobId].isActive, msg.sender);
     }
 }
