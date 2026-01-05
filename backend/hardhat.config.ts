@@ -1,10 +1,15 @@
 import { HardhatUserConfig } from 'hardhat/config';
+import hardhatViem from '@nomicfoundation/hardhat-viem';
+import hardhatViemAssertions from '@nomicfoundation/hardhat-viem-assertions';
+import hardhatNodeTestRunner from '@nomicfoundation/hardhat-node-test-runner';
+import hardhatNetworkHelpers from '@nomicfoundation/hardhat-network-helpers';
 import '@nomicfoundation/hardhat-toolbox-viem';
 import '@nomicfoundation/hardhat-ignition-viem';
 
 const config: HardhatUserConfig = {
+  plugins: [hardhatViem, hardhatViemAssertions, hardhatNodeTestRunner, hardhatNetworkHelpers],
   solidity: {
-    version: '0.8.28', // Dernière version stable
+    version: '0.8.28',
     settings: {
       optimizer: {
         enabled: true,
