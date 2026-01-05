@@ -1,22 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.28;
+pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/access/Ownable.sol";
-
-// ========== Custom Errors ==========
-error JobDoesNotExist();
-error CandidateNameEmpty();
-error CandidateEmailEmpty();
-error InvalidCandidateAddress();
-error CandidateAlreadyAssigned();
-error JobNotOpenForAssignment();
-error CannotChangeCompletedOrCancelledJob();
-error StatusAlreadySet();
-error CannotSetInProgressWithoutCandidate();
-error InvalidTransitionFromOpen();
-error InvalidTransitionFromInProgress();
-error OnlyAuthorOrOwnerCanToggle();
-error CannotApplyToOwnJob();
-error OnlyAuthorCanPerformAction();
 
 // JobBoard contract for managing job postings and applications
 // Inherits from Ownable to manage ownership and access control
@@ -49,7 +33,7 @@ contract JobBoard is Ownable {
     // Struct representing a job posting
     // Contains details such as ID, creation date, daily rate, status, activity status, author, candidate, and description
     // Optimized for storage efficiency
-    // SLOT 0: id, creationDate, dailyRate, status, isActive, author
+    // SLOT 0: id, creationDate, dailyRate, statut, isActive, author
     // SLOT 1: candidate
     // SLOT 2: description (dynamically sized)
     // Total size: 50 octets + dynamic description
@@ -58,7 +42,7 @@ contract JobBoard is Ownable {
         uint32 id; // 4 octets | de 0 à 4 294 967 295
         uint32 creationDate; // 4 octets | Timestamp (valid until 2106)
         uint32 dailyRate; // 2 octets | de 0 à 65 535 (TJM)
-        Status status; // 1 octet  | job status
+        Status statut;
         bool isActive; // 1 octet  | job active or not
         address author; // 20 octets| author address
         // --- SLOT 1 (Total: 20 / 32 octets utilisés) ---
@@ -114,95 +98,90 @@ contract JobBoard is Ownable {
     // Mapping from job ID to Job struct
     mapping(uint256 => Job) jobs;
 
-    modifier onlyAuthor(uint32 jobId) {
-        if (jobs[jobId].author != msg.sender)
-            revert OnlyAuthorCanPerformAction();
-        _;
-    }
-
-    modifier jobDoesExist(uint32 jobId) {
-        if (jobs[jobId].id == 0) revert JobDoesNotExist();
-        _;
-    }
-
-    modifier onlyAuthorOrOwner(uint32 jobId) {
-        if (msg.sender != jobs[jobId].author && msg.sender != owner()) {
-            revert OnlyAuthorOrOwnerCanToggle();
-        }
+    modifier onlyAuthor(uint32 _jobId) {
+        require(
+            jobs[_jobId].author == msg.sender,
+            "Only the author can perform this action"
+        );
         _;
     }
 
     // Function to create a new job
-    // @param dailyRate The daily rate for the job
-    // @param description The description of the job
-    function createJob(
-        uint32 dailyRate,
-        string calldata description
-    ) external {
+    // @param _dailyRate The daily rate for the job
+    // @param _description The description of the job
+    function createJob(uint32 _dailyRate, string memory _description) external {
         _jobIdCounter++;
         jobs[_jobIdCounter] = Job({
             id: uint32(_jobIdCounter),
             creationDate: uint32(block.timestamp),
-            dailyRate: dailyRate,
-            status: Status.Open,
+            dailyRate: _dailyRate,
+            statut: Status.Open,
             isActive: true,
             author: msg.sender,
             candidate: address(0),
-            description: description
+            description: _description
         });
-        emit NewJob(_jobIdCounter, msg.sender, dailyRate, description);
+        emit NewJob(_jobIdCounter, msg.sender, _dailyRate, _description);
     }
 
     // Function to assign a candidate to a job
     // @param _jobId The ID of the job
     // @param _candidateAddress The address of the candidate
-    // @param candidateName The name of the candidate
+    // @param _candidateName The name of the candidate
+    // @param _candidateEmail The email of the candidate
     function assigneCandidate(
-        uint32 jobId,
-        string calldata candidateName,
-        string calldata candidateEmail
-    ) external jobDoesExist(jobId) {
-        if (jobs[jobId].status != Status.Open) {
-            revert JobNotOpenForAssignment();
-        }
-        if (jobs[jobId].candidate != address(0)) {
-            revert CandidateAlreadyAssigned();
-        }
-        if (msg.sender == jobs[jobId].author) {
-            revert CannotApplyToOwnJob();
-        }
-        if (bytes(candidateName).length == 0) {
-            revert CandidateNameEmpty();
-        }
-        if (bytes(candidateEmail).length == 0) {
-            revert CandidateEmailEmpty();
-        }
-
-        jobs[jobId].candidate = msg.sender;
+        uint32 _jobId,
+        address _candidateAddress,
+        string memory _candidateName,
+        string memory _candidateEmail
+    ) external {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+        require(
+            jobs[_jobId].statut == Status.Open,
+            "Job is not open for assignment"
+        );
+        require(
+            jobs[_jobId].candidate == address(0),
+            "Candidate already assigned"
+        );
+        require(_candidateAddress != address(0), "Invalid candidate address");
+        require(
+            _candidateAddress != jobs[_jobId].author,
+            "Candidate cannot be the author"
+        );
+        require(
+            _candidateAddress != msg.sender,
+            "Sender cannot be the candidate"
+        );
+        require(
+            bytes(_candidateName).length > 0,
+            "Candidate name cannot be empty"
+        );
+        require(
+            bytes(_candidateEmail).length > 0,
+            "Candidate email cannot be empty"
+        );
+        jobs[_jobId].candidate = _candidateAddress;
         emit CandidateAssigned(
-            jobId,
-            msg.sender,
-            candidateName,
-            candidateEmail
+            _jobId,
+            _candidateAddress,
+            _candidateName,
+            _candidateEmail
         );
     }
 
     // Function to get a job by ID
     // @param _jobId The ID of the job
-    function getJob(
-        uint32 jobId
-    ) external view jobDoesExist(jobId) returns (Job memory) {
-        return jobs[jobId];
+    function getJob(uint32 _jobId) external view returns (Job memory) {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+        return jobs[_jobId];
     }
 
     // Function to get all jobs
     function getAllJobs() external view returns (Job[] memory) {
         Job[] memory allJobs = new Job[](_jobIdCounter);
-        for (uint32 i = 1; i <= _jobIdCounter; ) {
+        for (uint32 i = 1; i <= _jobIdCounter; i++) {
             allJobs[i - 1] = jobs[i];
-            unchecked {
-                i++;
-            }
         }
         return allJobs;
     }
@@ -210,25 +189,19 @@ contract JobBoard is Ownable {
     // Function to get all active jobs
     function getActiveJobs() external view returns (Job[] memory) {
         uint32 activeCount = 0;
-        for (uint32 i = 1; i <= _jobIdCounter; ) {
+        for (uint32 i = 1; i <= _jobIdCounter; i++) {
             if (jobs[i].isActive) {
                 activeCount++;
-            }
-            unchecked {
-                i++;
             }
         }
 
         Job[] memory activeJobs = new Job[](activeCount);
 
         uint32 currentIndex = 0;
-        for (uint32 i = 1; i <= _jobIdCounter; ) {
+        for (uint32 i = 1; i <= _jobIdCounter; i++) {
             if (jobs[i].isActive) {
                 activeJobs[currentIndex] = jobs[i];
                 currentIndex++;
-            }
-            unchecked {
-                i++;
             }
         }
 
@@ -237,59 +210,61 @@ contract JobBoard is Ownable {
 
     // Function to change the status of a job
     // @param _jobId The ID of the job
-    // @param newStatus The new status to set
+    // @param _newStatus The new status to set
     function changeJobStatus(
-        uint32 jobId,
-        Status newStatus
-    ) external jobDoesExist(jobId) onlyAuthor(jobId) {
-        Status currentStatus = jobs[jobId].status;
-        if (
-            currentStatus == Status.Completed ||
-            currentStatus == Status.Cancelled
-        ) {
-            revert CannotChangeCompletedOrCancelledJob();
-        }
-        if (currentStatus == newStatus) {
-            revert StatusAlreadySet();
-        }
+        uint32 _jobId,
+        Status _newStatus
+    ) external onlyAuthor(_jobId) {
+        require(jobs[_jobId].id != 0, "Job does not exist");
 
-        if (
-            newStatus == Status.InProgress &&
-            jobs[jobId].candidate == address(0)
-        ) {
-            revert CannotSetInProgressWithoutCandidate();
+        Status currentStatus = jobs[_jobId].statut;
+        require(
+            currentStatus != Status.Completed &&
+                currentStatus != Status.Cancelled,
+            "Cannot change status of completed or cancelled job"
+        );
+
+        require(
+            currentStatus != _newStatus,
+            "Status is already set to this value"
+        );
+
+        if (_newStatus == Status.InProgress) {
+            require(
+                jobs[_jobId].candidate != address(0),
+                "Cannot set InProgress without candidate"
+            );
         }
 
         if (currentStatus == Status.Open) {
-            // "Si le nouveau statut n'est PAS InProgress ET n'est PAS Cancelled, alors c'est invalide"
-            if (
-                newStatus != Status.InProgress &&
-                newStatus != Status.Cancelled
-            ) {
-                revert InvalidTransitionFromOpen();
-            }
+            require(
+                _newStatus == Status.InProgress ||
+                    _newStatus == Status.Cancelled,
+                "From Open, can only go to InProgress or Cancelled"
+            );
         } else if (currentStatus == Status.InProgress) {
-            // "Si le nouveau statut n'est PAS Open ET n'est PAS Completed ET n'est PAS Cancelled..."
-            if (
-                newStatus != Status.Open &&
-                newStatus != Status.Completed &&
-                newStatus != Status.Cancelled
-            ) {
-                revert InvalidTransitionFromInProgress();
-            }
+            require(
+                _newStatus == Status.Open ||
+                    _newStatus == Status.Completed ||
+                    _newStatus == Status.Cancelled,
+                "From InProgress, can only go to Open, Completed or Cancelled"
+            );
         }
 
-        jobs[jobId].status = newStatus;
-        emit JobUpdated(jobId, newStatus, msg.sender);
+        jobs[_jobId].statut = _newStatus;
+        emit JobUpdated(_jobId, _newStatus, msg.sender);
     }
 
     // Function to toggle the active status of a job
     // @param _jobId The ID of the job
-    function toggleJobActive(
-        uint32 jobId
-    ) external jobDoesExist(jobId) onlyAuthorOrOwner(jobId) {
-        jobs[jobId].isActive = !jobs[jobId].isActive;
+    function toggleJobActive(uint32 _jobId) external {
+        require(jobs[_jobId].id != 0, "Job does not exist");
+        require(
+            msg.sender == jobs[_jobId].author || msg.sender == owner(),
+            "Only author or owner can toggle job status"
+        );
+        jobs[_jobId].isActive = !jobs[_jobId].isActive;
 
-        emit JobToggled(jobId, jobs[jobId].isActive, msg.sender);
+        emit JobToggled(_jobId, jobs[_jobId].isActive, msg.sender);
     }
 }
