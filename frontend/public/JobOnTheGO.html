@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web3 Jobs Board</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body class="p-8">
+    <!-- Header -->
+    <div class="max-w-7xl mx-auto mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">🚀 Web3 Jobs Board</h1>
+          <p class="text-gray-400 mt-2">Trouvez votre prochaine mission blockchain</p>
+        </div>
+        <button class="btn btn-primary btn-lg" onclick="openModal()">➕ Ajouter une offre</button>
+      </div>
+    </div>
+
+    <!-- Jobs Grid -->
+    <div id="jobsContainer" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Les jobs seront insérés ici par JavaScript -->
+    </div>
+
+    <!-- Modal Création/Édition -->
+    <dialog id="jobModal" class="modal">
+      <div class="modal-box w-11/12 max-w-2xl">
+        <h3 class="font-bold text-2xl mb-4">
+          <span id="modalTitle">Nouvelle Offre</span>
+        </h3>
+
+        <form id="jobForm" class="space-y-4">
+          <input type="hidden" id="jobId" />
+
+          <!-- Auteur -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">👤 Auteur</span>
+            </label>
+            <input type="text" id="auteur" placeholder="Votre nom ou entreprise" class="input input-bordered" required />
+          </div>
+
+          <!-- Candidat -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">👨‍💻 Candidat (optionnel)</span>
+            </label>
+            <input type="text" id="candidat" placeholder="Nom du candidat sélectionné" class="input input-bordered" />
+          </div>
+
+          <!-- Description -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">📋 Description</span>
+            </label>
+            <textarea id="description" placeholder="Description du poste (compétences, missions, stack...)" class="textarea textarea-bordered h-32" required></textarea>
+          </div>
+
+          <!-- TJM -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">💰 TJM (€/jour)</span>
+            </label>
+            <input type="number" id="tjm" placeholder="500" min="0" step="50" class="input input-bordered" required />
+          </div>
+
+          <!-- Statut -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">📊 Statut</span>
+            </label>
+            <select id="statut" class="select select-bordered">
+              <option value="A pourvoir">🔵 À pourvoir</option>
+              <option value="En cours">🟡 En cours</option>
+              <option value="Terminé">🟢 Terminé</option>
+            </select>
+          </div>
+
+          <!-- Actions -->
+          <div class="modal-action">
+            <button type="button" class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button onclick="closeModal()">close</button>
+      </form>
+    </dialog>
+
+    <script>
+      // Base de données locale (remplacer par localStorage ou API plus tard)
+      let jobs = [
+        {
+          id: 1,
+          auteur: 'Ethereum Foundation',
+          candidat: '',
+          description: 'Développeur Solidity senior pour smart contracts DeFi. Stack: Hardhat, Ethers.js, React.',
+          tjm: 800,
+          statut: 'A pourvoir',
+        },
+        {
+          id: 2,
+          auteur: 'Uniswap Labs',
+          candidat: 'Alice Martin',
+          description: 'Frontend Web3 avec React et Wagmi. Expérience en DeFi requise.',
+          tjm: 650,
+          statut: 'En cours',
+        },
+        {
+          id: 3,
+          auteur: 'Aave Protocol',
+          candidat: 'Bob Dupont',
+          description: 'Fullstack blockchain (Solidity + Next.js). Mission de 3 mois.',
+          tjm: 750,
+          statut: 'Terminé',
+        },
+      ];
+
+      let editingJobId = null;
+
+      // Fonction pour obtenir le badge de statut
+      function getStatusBadge(statut) {
+        const badges = {
+          'A pourvoir': '<span class="badge badge-info">🔵 À pourvoir</span>',
+          'En cours': '<span class="badge badge-warning">🟡 En cours</span>',
+          Terminé: '<span class="badge badge-success">🟢 Terminé</span>',
+        };
+        return badges[statut] || badges['A pourvoir'];
+      }
+
+      // Afficher les jobs
+      function renderJobs() {
+        const container = document.getElementById('jobsContainer');
+
+        if (jobs.length === 0) {
+          container.innerHTML = `
+          <div class="col-span-full text-center py-20">
+            <p class="text-gray-400 text-xl">Aucune offre pour le moment</p>
+            <p class="text-gray-500 mt-2">Cliquez sur "Ajouter une offre" pour commencer</p>
+          </div>
+        `;
+          return;
+        }
+
+        container.innerHTML = jobs
+          .map(
+            (job) => `
+        <div class="card bg-base-200 shadow-xl hover:shadow-2xl transition-all hover:scale-105">
+          <div class="card-body">
+            <div class="flex justify-between items-start mb-3">
+              <h2 class="card-title text-primary">Job #${job.id}</h2>
+              ${getStatusBadge(job.statut)}
+            </div>
+            
+            <div class="space-y-2 text-sm">
+              <p><strong>👤 Auteur:</strong> ${job.auteur}</p>
+              ${job.candidat ? `<p><strong>👨‍💻 Candidat:</strong> ${job.candidat}</p>` : ''}
+              <p><strong>📋 Description:</strong></p>
+              <p class="text-gray-400 line-clamp-3">${job.description}</p>
+              <p class="text-2xl font-bold text-primary mt-3">💰 ${job.tjm}€/jour</p>
+            </div>
+
+            <div class="card-actions justify-end mt-4">
+              <button class="btn btn-sm btn-ghost" onclick="editJob(${job.id})">✏️ Modifier</button>
+              <button class="btn btn-sm btn-error btn-outline" onclick="deleteJob(${job.id})">🗑️ Supprimer</button>
+            </div>
+          </div>
+        </div>
+      `
+          )
+          .join('');
+      }
+
+      // Ouvrir la modal
+      function openModal() {
+        editingJobId = null;
+        document.getElementById('modalTitle').textContent = 'Nouvelle Offre';
+        document.getElementById('jobForm').reset();
+        document.getElementById('jobModal').showModal();
+      }
+
+      // Fermer la modal
+      function closeModal() {
+        document.getElementById('jobModal').close();
+        editingJobId = null;
+      }
+
+      // Éditer un job
+      function editJob(id) {
+        const job = jobs.find((j) => j.id === id);
+        if (!job) return;
+
+        editingJobId = id;
+        document.getElementById('modalTitle').textContent = `Modifier Job #${id}`;
+        document.getElementById('jobId').value = id;
+        document.getElementById('auteur').value = job.auteur;
+        document.getElementById('candidat').value = job.candidat;
+        document.getElementById('description').value = job.description;
+        document.getElementById('tjm').value = job.tjm;
+        document.getElementById('statut').value = job.statut;
+
+        document.getElementById('jobModal').showModal();
+      }
+
+      // Supprimer un job
+      function deleteJob(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette offre ?')) {
+          jobs = jobs.filter((j) => j.id !== id);
+          renderJobs();
+        }
+      }
+
+      // Soumettre le formulaire
+      document.getElementById('jobForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const formData = {
+          auteur: document.getElementById('auteur').value,
+          candidat: document.getElementById('candidat').value,
+          description: document.getElementById('description').value,
+          tjm: parseInt(document.getElementById('tjm').value),
+          statut: document.getElementById('statut').value,
+        };
+
+        if (editingJobId) {
+          // Modifier un job existant
+          const index = jobs.findIndex((j) => j.id === editingJobId);
+          jobs[index] = { ...jobs[index], ...formData };
+        } else {
+          // Créer un nouveau job
+          const newJob = {
+            id: Math.max(0, ...jobs.map((j) => j.id)) + 1,
+            ...formData,
+          };
+          jobs.push(newJob);
+        }
+
+        renderJobs();
+        closeModal();
+      });
+
+      // Affichage initial
+      renderJobs();
+    </script>
+  </body>
+</html>
