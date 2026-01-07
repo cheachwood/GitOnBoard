@@ -1,0 +1,1310 @@
+
+> backend@1.0.0 test
+> node --import tsx --test
+
+TAP version 13
+# Subtest: JobBoard
+    # Subtest: Deployment
+        # Subtest: should set the right owner
+        ok 1 - should set the right owner
+          ---
+          duration_ms: 217.8587
+          type: 'test'
+          ...
+        # Subtest: should start with zero jobs
+        ok 2 - should start with zero jobs
+          ---
+          duration_ms: 18.4014
+          type: 'test'
+          ...
+        1..2
+    ok 1 - Deployment
+      ---
+      duration_ms: 237.9089
+      type: 'suite'
+      ...
+    # Subtest: CreateJob
+        # Subtest: should create a job with correct properties
+        not ok 1 - should create a job with correct properties
+          ---
+          duration_ms: 67.9872
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:1387'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Raw Call Arguments:
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe21e6da00000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  getJob(uint32 _jobId)
+              args:            (1)
+            
+            Docs: https://viem.sh/docs/contract/readContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            readContract (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\public\readContract.ts:138:11)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:65:20)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Promise.all (index 0)
+            async Suite.run (node:internal/test_runner/test:1442:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should emit NewJob event \#1
+        ok 2 - should emit NewJob event \#1
+          ---
+          duration_ms: 72.2927
+          type: 'test'
+          ...
+        # Subtest: should emit NewJob event \#2
+        not ok 3 - should emit NewJob event \#2
+          ---
+          duration_ms: 50.7251
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:2403'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Raw Call Arguments:
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe21e6da00000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  getJob(uint32 _jobId)
+              args:            (1)
+            
+            Docs: https://viem.sh/docs/contract/readContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            readContract (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\public\readContract.ts:138:11)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:107:20)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should increment job counter
+        ok 4 - should increment job counter
+          ---
+          duration_ms: 83.948
+          type: 'test'
+          ...
+        # Subtest: should assign sequential IDs to jobs
+        ok 5 - should assign sequential IDs to jobs
+          ---
+          duration_ms: 75.2558
+          type: 'test'
+          ...
+        # Subtest: should allow different users to create jobs
+        not ok 6 - should allow different users to create jobs
+          ---
+          duration_ms: 52.4296
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:3848'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Raw Call Arguments:
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe21e6da00000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  getJob(uint32 _jobId)
+              args:            (1)
+            
+            Docs: https://viem.sh/docs/contract/readContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            readContract (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\public\readContract.ts:138:11)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:163:21)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        1..6
+    not ok 2 - CreateJob
+      ---
+      duration_ms: 405.0657
+      type: 'suite'
+      location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:1361'
+      failureType: 'subtestsFailed'
+      error: '3 subtests failed'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: AssignedCandidate
+        # Subtest: should assigned a candidate to a job
+        not ok 1 - should assigned a candidate to a job
+          ---
+          duration_ms: 55.9248
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:4387'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4a65616e40676d61696c2e636f6d000000000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, Jean@gmail.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:181:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Promise.all (index 0)
+            async Suite.run (node:internal/test_runner/test:1442:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should allow multiple users to apply to different jobs
+        not ok 2 - should allow multiple users to apply to different jobs
+          ---
+          duration_ms: 79.2877
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:4780'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4a65616e40676d61696c2e636f6d000000000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, Jean@gmail.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:200:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should emit CandidateAssigned event
+        not ok 3 - should emit CandidateAssigned event
+          ---
+          duration_ms: 41.8911
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:5731'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4a65616e40676d61696c2e636f6d000000000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, Jean@gmail.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async handleEmit (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\emit\core.ts:38:3)
+            async emitWithArgs (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\emit\emit-with-args.ts:53:22)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:222:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when candidate name is empty
+        not ok 4 - should revert when candidate name is empty
+          ---
+          duration_ms: 41.3731
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:6120'
+          failureType: 'testCodeFailure'
+          error: "The function was expected to revert with a non custom error, but it instead reverted with a custom error. VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'"
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:38:14)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:233:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when candidate email is empty
+        not ok 5 - should revert when candidate email is empty
+          ---
+          duration_ms: 38.7201
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:6452'
+          failureType: 'testCodeFailure'
+          error: "The function was expected to revert with a non custom error, but it instead reverted with a custom error. VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'"
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:38:14)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:244:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when job does not exist with id 999
+        not ok 6 - should revert when job does not exist with id 999
+          ---
+          duration_ms: 12.5514
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:6776'
+          failureType: 'testCodeFailure'
+          error: 'The function was expected to revert, but it did not revert'
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:58:10)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:252:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when job is not open
+        not ok 7 - should revert when job is not open
+          ---
+          duration_ms: 43.8229
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:7004'
+          failureType: 'unhandledRejection'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x58156bf000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000003
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  changeJobStatus(uint32 _jobId, uint8 _newStatus)
+              args:                     (1, 3)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+          ...
+        # Subtest: should revert when candidate already assigned
+        not ok 8 - should revert when candidate already assigned
+          ---
+          duration_ms: 42.3097
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:7370'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4a65616e40676d61696c2e636f6d000000000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, Jean@gmail.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:273:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when trying to apply to own job
+        not ok 9 - should revert when trying to apply to own job
+          ---
+          duration_ms: 43.5868
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:7796'
+          failureType: 'testCodeFailure'
+          error: "The function was expected to revert with a non custom error, but it instead reverted with a custom error. VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'"
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:38:14)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:287:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        1..9
+    not ok 3 - AssignedCandidate
+      ---
+      duration_ms: 400.5744
+      type: 'suite'
+      location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:4353'
+      failureType: 'subtestsFailed'
+      error: '9 subtests failed'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: getJob
+        # Subtest: should revert when job does not exist
+        not ok 1 - should revert when job does not exist
+          ---
+          duration_ms: 28.0819
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:8182'
+          failureType: 'testCodeFailure'
+          error: 'The function was expected to revert, but it did not revert'
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:58:10)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:299:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Promise.all (index 0)
+            async Suite.run (node:internal/test_runner/test:1442:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        1..1
+    not ok 4 - getJob
+      ---
+      duration_ms: 28.5982
+      type: 'suite'
+      location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:8159'
+      failureType: 'subtestsFailed'
+      error: '1 subtest failed'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: getActiveJobs 
+        # Subtest: should return only isActive jobs
+        not ok 1 - should return only isActive jobs
+          ---
+          duration_ms: 82.4208
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:8488'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000002
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (2)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:314:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Promise.all (index 0)
+            async Suite.run (node:internal/test_runner/test:1442:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should not return inactive jobs
+        not ok 2 - should not return inactive jobs
+          ---
+          duration_ms: 92.2247
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:8889'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000002
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (2)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:331:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should return empty array when no active jobs
+        not ok 3 - should return empty array when no active jobs
+          ---
+          duration_ms: 77.3439
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:9378'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:350:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should return only active jobs when mix of active and inactive
+        not ok 4 - should return only active jobs when mix of active and inactive
+          ---
+          duration_ms: 108.517
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:9876'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000002
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (2)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:371:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should return all active jobs when all jobs are active
+        ok 5 - should return all active jobs when all jobs are active
+          ---
+          duration_ms: 101.1751
+          type: 'test'
+          ...
+        1..5
+    not ok 5 - getActiveJobs 
+      ---
+      duration_ms: 462.2612
+      type: 'suite'
+      location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:8457'
+      failureType: 'subtestsFailed'
+      error: '4 subtests failed'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: getAllJobs 
+        # Subtest: should return all created jobs
+        not ok 1 - should return all created jobs
+          ---
+          duration_ms: 74.3387
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:11066'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000002
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (2)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:423:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Promise.all (index 0)
+            async Suite.run (node:internal/test_runner/test:1442:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should return empty array when no jobs exist
+        ok 2 - should return empty array when no jobs exist
+          ---
+          duration_ms: 13.2483
+          type: 'test'
+          ...
+        # Subtest: should return jobs regardless of active status
+        not ok 3 - should return jobs regardless of active status
+          ---
+          duration_ms: 101.2365
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:11801'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:460:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should return jobs in correct order
+        ok 4 - should return jobs in correct order
+          ---
+          duration_ms: 91.4138
+          type: 'test'
+          ...
+        1..4
+    not ok 6 - getAllJobs 
+      ---
+      duration_ms: 280.6868
+      type: 'suite'
+      location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:11038'
+      failureType: 'subtestsFailed'
+      error: '2 subtests failed'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: toggleJobActive 
+        # Subtest: should toggle job from active to inactive
+        not ok 1 - should toggle job from active to inactive
+          ---
+          duration_ms: 47.9495
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:13288'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:515:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Promise.all (index 0)
+            async Suite.run (node:internal/test_runner/test:1442:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should toggle job from inactive to active
+        not ok 2 - should toggle job from inactive to active
+          ---
+          duration_ms: 36.0624
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:13640'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:529:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should emit JobToggled event
+        not ok 3 - should emit JobToggled event
+          ---
+          duration_ms: 37.9151
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:14033'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async handleEmit (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\emit\core.ts:38:3)
+            async emitWithArgs (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\emit\emit-with-args.ts:53:22)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:546:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when job does not exist
+        not ok 4 - should revert when job does not exist
+          ---
+          duration_ms: 22.4987
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:14365'
+          failureType: 'testCodeFailure'
+          error: 'The function was expected to revert, but it did not revert'
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:58:10)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:554:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should allow owner to toggle any job
+        not ok 5 - should allow owner to toggle any job
+          ---
+          duration_ms: 37.1087
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:14615'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:564:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should allow author to toggle their own job
+        not ok 6 - should allow author to toggle their own job
+          ---
+          duration_ms: 37.0572
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:15022'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:579:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when neither author nor owner
+        not ok 7 - should revert when neither author nor owner
+          ---
+          duration_ms: 37.3762
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:15430'
+          failureType: 'testCodeFailure'
+          error: "The function was expected to revert with a non custom error, but it instead reverted with a custom error. VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'"
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:38:14)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:594:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should allow multiple toggles
+        not ok 8 - should allow multiple toggles
+          ---
+          duration_ms: 35.6032
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:15969'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0x57b576ce0000000000000000000000000000000000000000000000000000000000000001
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  toggleJobActive(uint32 _jobId)
+              args:                     (1)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:608:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        1..8
+    not ok 7 - toggleJobActive 
+      ---
+      duration_ms: 292.9284
+      type: 'suite'
+      location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:13255'
+      failureType: 'subtestsFailed'
+      error: '8 subtests failed'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: changeJobStatus 
+        # Subtest: should change status from Open to InProgress
+        not ok 1 - should change status from Open to InProgress
+          ---
+          duration_ms: 35.1618
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:16530'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:626:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Promise.all (index 0)
+            async Suite.run (node:internal/test_runner/test:1442:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should change status from Open to Cancelled
+        not ok 2 - should change status from Open to Cancelled
+          ---
+          duration_ms: 35.3913
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:16928'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:641:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should change status from InProgress to Completed
+        not ok 3 - should change status from InProgress to Completed
+          ---
+          duration_ms: 35.8554
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:17325'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:656:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should change status from InProgress to Open
+        not ok 4 - should change status from InProgress to Open
+          ---
+          duration_ms: 35.3499
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:17772'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:672:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should emit JobUpdated event
+        not ok 5 - should emit JobUpdated event
+          ---
+          duration_ms: 34.736
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:18214'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:688:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when job does not exist
+        not ok 6 - should revert when job does not exist
+          ---
+          duration_ms: 22.2386
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:18619'
+          failureType: 'testCodeFailure'
+          error: |-
+            The function was expected to revert with reason "Job does not exist", but it reverted with reason: Only the author can perform this action.
+            + actual - expected
+            
+            + 'Only the author can perform this action'
+            - 'Job does not exist'
+            
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          expected: 'Job does not exist'
+          actual: 'Only the author can perform this action'
+          operator: 'strictEqual'
+          stack: |-
+            revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:37:10)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:699:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when not job author
+        not ok 7 - should revert when not job author
+          ---
+          duration_ms: 34.4249
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:18871'
+          failureType: 'testCodeFailure'
+          error: "The function was expected to revert with a non custom error, but it instead reverted with a custom error. VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'"
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:38:14)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:709:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when trying to change status of a Completed job
+        not ok 8 - should revert when trying to change status of a Completed job
+          ---
+          duration_ms: 42.2655
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:19184'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:717:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when trying to change status of a Cancelled job
+        not ok 9 - should revert when trying to change status of a Cancelled job
+          ---
+          duration_ms: 35.0414
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:19693'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:730:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when setting same status
+        not ok 10 - should revert when setting same status
+          ---
+          duration_ms: 35.0778
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:20202'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:743:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when changing Open to InProgress without candidate
+        not ok 11 - should revert when changing Open to InProgress without candidate
+          ---
+          duration_ms: 34.328
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:20629'
+          failureType: 'testCodeFailure'
+          error: "The function was expected to revert with a non custom error, but it instead reverted with a custom error. VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'"
+          code: 'ERR_ASSERTION'
+          name: 'AssertionError'
+          operator: 'fail'
+          stack: |-
+            handleRevert (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\handle-revert.ts:38:14)
+            async revertWith (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\@nomicfoundation\hardhat-viem-assertions\src\internal\assertions\revert\revert-with.ts:17:18)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:757:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        # Subtest: should revert when changing Open to Completed
+        not ok 12 - should revert when changing Open to Completed
+          ---
+          duration_ms: 34.4746
+          type: 'test'
+          location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:20943'
+          failureType: 'testCodeFailure'
+          error: |-
+            An unknown RPC error occurred.
+            
+            Request Arguments:
+              from:  0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+              to:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+              data:  0xe55677450000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000044a65616e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106a65616e406578616d706c652e636f6d00000000000000000000000000000000
+             
+            Contract Call:
+              address:   0x5fbdb2315678afecb367f032d93f642f64180aa3
+              function:  assigneCandidate(uint32 _jobId, string _candidateName, string _candidateEmail)
+              args:                      (1, Jean, jean@example.com)
+              sender:    0x70997970c51812dc3a010c7d01b50e0d17dc79c8
+            
+            Docs: https://viem.sh/docs/contract/writeContract
+            Details: VM Exception while processing transaction: reverted with custom error 'JobDoesNotExist()'
+            Version: viem@2.41.2
+          code: 'ERR_TEST_FAILURE'
+          name: 'ContractFunctionExecutionError'
+          stack: |-
+            getContractError (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\utils\errors\getContractError.ts:81:10)
+            AsyncFunction.internal (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\node_modules\viem\actions\wallet\writeContract.ts:242:13)
+            async TestContext.<anonymous> (C:\Users\jfelicite\OneDrive - ASI\Documents\04_PERSONNEL\DEV\ReactJs\GitOnBoard\backend\test\JobBoard.test.ts:765:7)
+            async Test.run (node:internal/test_runner/test:1054:7)
+            async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+          ...
+        1..12
+    not ok 8 - changeJobStatus 
+      ---
+      duration_ms: 415.8047
+      type: 'suite'
+      location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:16497'
+      failureType: 'subtestsFailed'
+      error: '12 subtests failed'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    1..8
+not ok 1 - JobBoard
+  ---
+  duration_ms: 2525.8511
+  type: 'suite'
+  location: 'C:\\Users\\jfelicite\\OneDrive - ASI\\Documents\\04_PERSONNEL\\DEV\\ReactJs\\GitOnBoard\\backend\\test\\JobBoard.test.ts:1:517'
+  failureType: 'subtestsFailed'
+  error: '7 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 47
+# suites 9
+# pass 8
+# fail 39
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8529.4408

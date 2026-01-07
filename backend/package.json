@@ -4,18 +4,27 @@
   "type": "module",
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition-viem": "^3.0.6",
+    "@nomicfoundation/hardhat-network-helpers": "^3.0.3",
+    "@nomicfoundation/hardhat-node-test-runner": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox-viem": "^5.0.1",
+    "@nomicfoundation/hardhat-viem": "^3.0.1",
+    "@nomicfoundation/hardhat-viem-assertions": "^3.0.4",
     "@openzeppelin/contracts": "^5.0.0",
     "@types/node": "^22.19.2",
     "forge-std": "github:foundry-rs/forge-std",
     "hardhat": "^3.1.0",
+    "tsx": "^4.21.0",
     "typescript": "~5.8.0",
-    "viem": "^2.41.2"
+    "viem": "^2.43.1"
   },
   "scripts": {
     "dev": "hardhat node",
     "compile": "hardhat compile",
-    "test": "hardhat test",
+    "test": "node --import tsx --test",
+    "test:all": "node --import tsx --test test/**/*.test.ts",
+    "test:only": "node --import tsx --test --test-only",
+    "test:watch": "node --import tsx --test --watch",
+    "test:coverage": "node --import tsx --test --experimental-test-coverage test/**/*.test.ts",
     "deploy": "hardhat ignition deploy ignition/modules/JobBoard.ts --network localhost"
   }
 }
