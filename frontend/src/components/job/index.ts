@@ -3,11 +3,17 @@ export interface Job {
   description: string;
   author: string;
   dailyRate: number;
-  candidate: string;
+  candidat: Candidat;
   isActive: boolean;
   creationDate: number;
   isOwner: boolean;
   status: JobTypeValue;
+}
+
+export interface Candidat {
+  candidateName: string;
+  candidateMail: string;
+  candidateWallet?: string;
 }
 
 export type JobTypeValue = (typeof JOB_TYPE_OPTIONS)[number]['value'];
@@ -46,4 +52,11 @@ export interface EditJobDialogProps {
   open: boolean;
   onClose: () => void;
   onEditJob: (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => void;
+}
+
+export interface AssignCandidateDialogProps {
+  job: Job;
+  open: boolean;
+  onClose: () => void;
+  onCandidateJob: (candidateJob: { id: number; candidatNom: string; candidatMail: string; candidatWallet?: string }) => void;
 }
