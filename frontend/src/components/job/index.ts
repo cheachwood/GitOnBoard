@@ -36,3 +36,7 @@ export interface JobListProps {
   connectedAddress?: string;
   isLoading?: boolean;
 }
+
+export interface JobDialogProps {
+  onCreateJob: (newJob: { author: string; description: string; dailyRate: number }) => void;
+}

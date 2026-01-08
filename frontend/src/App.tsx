@@ -5,6 +5,7 @@ import Header from './components/layout/Header';
 import { jobs } from './lib/mockData';
 import JobList from './components/job/JobList';
 import { useEffect, useState } from 'react';
+import { Toaster } from 'sonner';
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ function App() {
         <div className="min-h-screen bg-slate-900">
           <Header />
           <JobList jobs={jobs} connectedAddress="{conn}" isLoading={isLoading} />
+          <Toaster position="top-center" theme="dark" />
         </div>
       </QueryClientProvider>
     </WagmiProvider>
