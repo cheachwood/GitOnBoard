@@ -40,3 +40,10 @@ export interface JobListProps {
 export interface JobDialogProps {
   onCreateJob: (newJob: { author: string; description: string; dailyRate: number }) => void;
 }
+
+export interface EditJobDialogProps {
+  job: Job;
+  open: boolean;
+  onClose: () => void;
+  onEditJob: (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => void;
+}
