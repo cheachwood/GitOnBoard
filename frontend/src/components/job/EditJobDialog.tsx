@@ -1,21 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
-import type { JobDialogProps } from '.';
+import type { EditJobDialogProps } from '.';
 import { toast } from 'sonner';
 
-const CreateJobDialog = ({ onCreateJob }: JobDialogProps) => {
-  const [auteur, setAuteur] = useState('');
-  const [description, setDescription] = useState('');
-  const [dailyRate, setDailyRate] = useState(0);
-  const [open, setOpen] = useState(false);
+const EditJobDialog = ({ job, open, onClose, onEditJob }: EditJobDialogProps) => {
+  const [auteur, setAuteur] = useState(job.author);
+  const [description, setDescription] = useState(job.description);
+  const [dailyRate, setDailyRate] = useState(job.dailyRate);
 
-  const handleCreateJob = () => {
+  const handleEditJob = () => {
     if (!auteur || !description || dailyRate <= 0) {
-      toast.error('Veuillez remplir tous les champs correctement', {
+      toast.error('Veuillez vérifier que tous les champs sont correctement renseignés', {
         style: {
           background: '#ef4444',
           color: '#fff',
@@ -24,31 +23,23 @@ const CreateJobDialog = ({ onCreateJob }: JobDialogProps) => {
       });
       return;
     }
-    onCreateJob({ author: auteur, description, dailyRate });
-    toast.success('Offre créée avec succès !', {
+    onEditJob({ id: job.id, author: auteur, description, dailyRate });
+    toast.success('Offre modifiée avec succès !', {
       style: {
         background: '#7c3aed',
         color: '#fff',
         border: '2px solid #a78bfa',
       },
     });
-    setOpen(false);
-    setAuteur('');
-    setDescription('');
-    setDailyRate(0);
+    onClose();
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-purple-600 text-white hover:bg-purple-700">➕ Ajouter une offre</Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="bg-gray-800 modal-box w-11/12 max-w-2xl">
         <DialogHeader>
-          <DialogTitle id="modalTitle" className="text-white font-bold text-2xl mb-4">
-            Nouvelle Offre
-          </DialogTitle>
-          <DialogDescription className="text-gray-400">Remplissez les informations pour créer une nouvelle offre.</DialogDescription>
+          <DialogTitle className="text-white font-bold text-2xl mb-4">Modifier l'offre #{job.id}</DialogTitle>
+          <DialogDescription className="text-gray-400">Modifiez les informations de l'offre ci-dessous.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">
           <div className="grid gap-3">
@@ -76,8 +67,8 @@ const CreateJobDialog = ({ onCreateJob }: JobDialogProps) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button className="text-white bg-purple-600 hover:bg-purple-700" onClick={handleCreateJob}>
-            Créer
+          <Button className="text-white bg-purple-600 hover:bg-purple-700" onClick={handleEditJob}>
+            Enregistrer
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -85,4 +76,4 @@ const CreateJobDialog = ({ onCreateJob }: JobDialogProps) => {
   );
 };
 
-export default CreateJobDialog;
+export default EditJobDialog;
