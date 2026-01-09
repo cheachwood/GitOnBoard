@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { statusColors, type JobProps } from '.';
 import EditJobDialog from './EditJobDialog';
 import { useState } from 'react';
+import AssignCandidateDialog from './AssignCandidateDialog';
 
 const getStatusColor = (status: string): string => {
   return statusColors[status as keyof typeof statusColors] || 'bg-gray-500';
@@ -12,9 +13,14 @@ const getStatusColor = (status: string): string => {
 
 const JobCard = ({ job }: JobProps) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isCandidatDialogOpen, setIsCandidatDialogOpen] = useState(false);
 
   const handleEditJob = (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => {
     console.log('Edit job clicked for job id:', updatedJob.id);
+  };
+
+  const handleCandidateJob = (candidateJob: { id: number; candidatNom: string; candidatMail: string; candidatWallet?: string }) => {
+    console.log('Candidature de :', candidateJob);
   };
   return (
     <>
@@ -32,10 +38,10 @@ const JobCard = ({ job }: JobProps) => {
               <Label className="ml-2">{job.author}</Label>
             </div>
 
-            {job.candidate && (
+            {job.candidat && (
               <div>
                 <Label className="font-semibold text-gray-400">👨‍💻 Candidat:</Label>
-                <Label className="ml-2 text-green-400">{job.candidate}</Label>
+                <Label className="ml-2 text-green-400">{job.candidat.candidateName}</Label>
               </div>
             )}
 
@@ -60,11 +66,14 @@ const JobCard = ({ job }: JobProps) => {
               <Button className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition">🗑️ Supprimer</Button>
             </>
           ) : (
-            <Button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 transition">📝 Candidater</Button>
+            <Button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 transition" onClick={() => setIsCandidatDialogOpen(true)}>
+              📝 Candidater
+            </Button>
           )}
         </CardFooter>
       </Card>
       <EditJobDialog key={`edit-${job.id}-${isEditDialogOpen}`} job={job} open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} onEditJob={handleEditJob} />
+      <AssignCandidateDialog key={`candidate-${job.id}-${isCandidatDialogOpen}`} job={job} open={isCandidatDialogOpen} onClose={() => setIsCandidatDialogOpen(false)} onCandidateJob={handleCandidateJob} />
     </>
   );
 };

@@ -45,9 +45,7 @@ const CreateJobDialog = ({ onCreateJob }: JobDialogProps) => {
       </DialogTrigger>
       <DialogContent className="bg-gray-800 modal-box w-11/12 max-w-2xl">
         <DialogHeader>
-          <DialogTitle id="modalTitle" className="text-white font-bold text-2xl mb-4">
-            Nouvelle Offre
-          </DialogTitle>
+          <DialogTitle className="text-white font-bold text-2xl mb-4">Nouvelle Offre</DialogTitle>
           <DialogDescription className="text-gray-400">Remplissez les informations pour créer une nouvelle offre.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">
