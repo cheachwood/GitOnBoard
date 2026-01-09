@@ -1,15 +1,3 @@
-export interface Job {
-  id: number;
-  description: string;
-  author: string;
-  dailyRate: number;
-  candidat: Candidat;
-  isActive: boolean;
-  creationDate: number;
-  isOwner: boolean;
-  status: JobTypeValue;
-}
-
 export interface Candidat {
   candidateName: string;
   candidateMail: string;
@@ -25,6 +13,20 @@ export const JOB_TYPE_OPTIONS = [
   { value: 'Completed', label: 'Completed' },
   { value: 'Cancelled', label: 'Cancelled' },
 ] as const;
+
+export type JobStatus = Exclude<JobTypeValue, 'all'>;
+
+export interface Job {
+  id: number;
+  description: string;
+  author: string;
+  dailyRate: number;
+  candidat: Candidat;
+  isActive: boolean;
+  creationDate: number;
+  isOwner: boolean;
+  status: JobStatus;
+}
 
 export interface JobProps {
   job: Job;
@@ -59,4 +61,11 @@ export interface AssignCandidateDialogProps {
   open: boolean;
   onClose: () => void;
   onCandidateJob: (candidateJob: { id: number; candidatNom: string; candidatMail: string; candidatWallet?: string }) => void;
+}
+
+export interface ChangeStatusDialogProps {
+  job: Job;
+  open: boolean;
+  onClose: () => void;
+  onStatusChanged: (job: Job) => void;
 }
