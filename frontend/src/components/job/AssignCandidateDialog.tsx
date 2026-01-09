@@ -11,7 +11,7 @@ const AssignCandidateDialog = ({ job, open, onClose, onCandidateJob }: AssignCan
   const [mail, setMail] = useState('');
   const [wallet, setWallet] = useState('');
 
-  const handleEditJob = () => {
+  const handleCandidate = () => {
     // 1. Définition des validations
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail);
     const isWalletValid = /^0x[a-fA-F0-9]{40}$/.test(wallet);
@@ -24,9 +24,9 @@ const AssignCandidateDialog = ({ job, open, onClose, onCandidateJob }: AssignCan
     };
 
     // 3. Logique de validation groupée
-    if (!nom || !mail || !wallet) return showError('Tous les champs sont requis');
+    if (!nom || !mail) return showError('Tous les champs sont requis');
     if (!isEmailValid) return showError('Format email invalide');
-    if (!isWalletValid) return showError('Format wallet invalide (0x...)');
+    if (wallet && !isWalletValid) return showError('Format wallet invalide (0x...)');
 
     onCandidateJob({ id: job.id, candidatNom: nom, candidatMail: mail, candidatWallet: wallet });
     toast.success('Candidature envoyée avec succès !', {
@@ -37,6 +37,9 @@ const AssignCandidateDialog = ({ job, open, onClose, onCandidateJob }: AssignCan
       },
     });
     onClose();
+    setNom('');
+    setMail('');
+    setWallet('');
   };
 
   return (
@@ -72,7 +75,7 @@ const AssignCandidateDialog = ({ job, open, onClose, onCandidateJob }: AssignCan
               Annuler
             </Button>
           </DialogClose>
-          <Button className="text-white bg-purple-600 hover:bg-purple-700" onClick={handleEditJob}>
+          <Button className="text-white bg-purple-600 hover:bg-purple-700" onClick={handleCandidate}>
             📝 Candidater
           </Button>
         </DialogFooter>
