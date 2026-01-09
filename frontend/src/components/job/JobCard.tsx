@@ -2,10 +2,11 @@ import { Label } from '@radix-ui/react-label';
 import { Button } from '../ui/button';
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '@/components/ui/badge';
-import { statusColors, type JobProps } from '.';
+import { statusColors, type Job, type JobProps } from '.';
 import EditJobDialog from './EditJobDialog';
 import { useState } from 'react';
 import AssignCandidateDialog from './AssignCandidateDialog';
+import ChangeStatusDialog from './ChangeStatusDialog';
 
 const getStatusColor = (status: string): string => {
   return statusColors[status as keyof typeof statusColors] || 'bg-gray-500';
@@ -14,6 +15,7 @@ const getStatusColor = (status: string): string => {
 const JobCard = ({ job }: JobProps) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCandidatDialogOpen, setIsCandidatDialogOpen] = useState(false);
+  const [isChangeStatusDialogOpen, setIsChangeStatusDialogOpen] = useState(false);
 
   const handleEditJob = (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => {
     console.log('Edit job clicked for job id:', updatedJob.id);
@@ -22,13 +24,20 @@ const JobCard = ({ job }: JobProps) => {
   const handleCandidateJob = (candidateJob: { id: number; candidatNom: string; candidatMail: string; candidatWallet?: string }) => {
     console.log('Candidature de :', candidateJob);
   };
+
+  const handleStatusChanged = (statusJob: Job) => {
+    console.log('Status du job :', statusJob.status);
+  };
+
   return (
     <>
       <Card className="h-full flex flex-col bg-gray-800 rounded-xl shadow-xl hover:shadow-2xl transition-all hover:scale-105 overflow-hidden">
         <CardHeader className="flex justify-between items-start mb-4">
           <CardTitle className="text-xl font-bold text-purple-400">Job #{job.id}</CardTitle>
           <CardAction>
-            <Badge className={getStatusColor(job.status)}>{job.status}</Badge>
+            <Badge className={`${getStatusColor(job.status)} cursor-pointer hover:opacity-80 transition-opacity`} onClick={() => setIsChangeStatusDialogOpen(true)}>
+              {job.status}
+            </Badge>
           </CardAction>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col text-sm text-gray-300">
@@ -74,6 +83,7 @@ const JobCard = ({ job }: JobProps) => {
       </Card>
       <EditJobDialog key={`edit-${job.id}-${isEditDialogOpen}`} job={job} open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} onEditJob={handleEditJob} />
       <AssignCandidateDialog key={`candidate-${job.id}-${isCandidatDialogOpen}`} job={job} open={isCandidatDialogOpen} onClose={() => setIsCandidatDialogOpen(false)} onCandidateJob={handleCandidateJob} />
+      <ChangeStatusDialog key={`change-status-${job.id}-${isChangeStatusDialogOpen}`} job={job} open={isChangeStatusDialogOpen} onClose={() => setIsChangeStatusDialogOpen(false)} onStatusChanged={handleStatusChanged} />
     </>
   );
 };
