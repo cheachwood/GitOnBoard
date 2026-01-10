@@ -1,12 +1,16 @@
 import type { Job } from '@/components/job';
 
-export const jobs: Job[] = [
+export const MOCK_JOBS: Job[] = [
   {
-    id: 1,
+    id: 100,
     description: "Développement d'un Smart Contract de traçabilité pour l'industrie du luxe sur Polygon.",
     author: 'jc',
     dailyRate: 550,
-    candidate: '',
+    candidat: {
+      candidateName: '',
+      candidateMail: '',
+      candidateWallet: '',
+    },
     isActive: true,
     creationDate: 1704638400000,
     isOwner: true,
@@ -17,7 +21,11 @@ export const jobs: Job[] = [
     description: 'Audit de sécurité du Smart Contract de traçabilité v1. Recherche de vulnérabilités critiques.',
     author: 'BlockchainSec',
     dailyRate: 800,
-    candidate: '0x71C...a2b',
+    candidat: {
+      candidateName: '0x71C...a2b',
+      candidateMail: 'dev@blockchain.com',
+      candidateWallet: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+    },
     isActive: true,
     creationDate: 1736155200000,
     isOwner: false,
@@ -28,7 +36,11 @@ export const jobs: Job[] = [
     description: "Design de l'interface utilisateur (UI) pour le module de gestion des vols.",
     author: 'jc',
     dailyRate: 450,
-    candidate: 'GraphistePro',
+    candidat: {
+      candidateName: '',
+      candidateMail: '',
+      candidateWallet: '',
+    },
     isActive: false,
     creationDate: 1735651200000,
     isOwner: true,
@@ -39,7 +51,11 @@ export const jobs: Job[] = [
     description: 'Migration des données vers un nouveau réseau de test (Testnet).',
     author: 'DevOps_Team',
     dailyRate: 600,
-    candidate: '',
+    candidat: {
+      candidateName: '',
+      candidateMail: '',
+      candidateWallet: '',
+    },
     isActive: false,
     creationDate: 1735824000000,
     isOwner: false,
@@ -50,7 +66,11 @@ export const jobs: Job[] = [
     description: 'Hop on fait un test.',
     author: 'jc',
     dailyRate: 600,
-    candidate: '',
+    candidat: {
+      candidateName: '',
+      candidateMail: '',
+      candidateWallet: '',
+    },
     isActive: false,
     creationDate: 1735824000000,
     isOwner: false,
