@@ -41,25 +41,24 @@ const EditJobDialog = ({ job, open, onClose, onEditJob }: EditJobDialogProps) =>
           <DialogTitle className="text-white font-bold text-2xl mb-4">Modifier l'offre #{job.id}</DialogTitle>
           <DialogDescription className="text-gray-400">Modifiez les informations de l'offre ci-dessous.</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4">
-          <div className="grid gap-3">
-            <Label htmlFor="author" className="text-white">
-              👤 Auteur
-            </Label>
-            <Input id="author" name="auteur" placeholder="Auteur..." className="text-white bg-gray-900" value={auteur} onChange={(e) => setAuteur(e.target.value)} />
-          </div>
-          <div className="grid gap-3">
-            <Label htmlFor="description" className="text-white">
-              📋 Description
-            </Label>
-            <Textarea id="description" name="description" placeholder="Description..." className="h-32 text-white bg-gray-900" value={description} onChange={(e) => setDescription(e.target.value)} />
-          </div>
-          <div className="grid gap-3">
-            <Label htmlFor="tjm" className="text-white">
-              💰 TJM (€/jour)
-            </Label>
-            <Input id="tjm" type="number" name="tjm" placeholder="0" className="text-white bg-gray-900" value={dailyRate} onChange={(e) => setDailyRate(Number(e.target.value))} />{' '}
-          </div>
+
+        <div className="grid gap-3">
+          <Label htmlFor="author" className="text-white">
+            👤 Auteur
+          </Label>
+          <Input id="author" name="auteur" placeholder="Auteur..." className="text-white bg-gray-900" value={auteur} onChange={(e) => setAuteur(e.target.value)} />
+        </div>
+        <div className="grid gap-3">
+          <Label htmlFor="description" className="text-white">
+            📋 Description
+          </Label>
+          <Textarea id="description" name="description" placeholder="Description..." className="h-32 text-white bg-gray-900" value={description} onChange={(e) => setDescription(e.target.value)} />
+        </div>
+        <div className="grid gap-3">
+          <Label htmlFor="tjm" className="text-white">
+            💰 TJM (€/jour)
+          </Label>
+          <Input id="tjm" type="number" name="tjm" placeholder="0" className="text-white bg-gray-900" value={dailyRate} onChange={(e) => setDailyRate(Number(e.target.value))} />{' '}
         </div>
         <DialogFooter>
           <DialogClose asChild>

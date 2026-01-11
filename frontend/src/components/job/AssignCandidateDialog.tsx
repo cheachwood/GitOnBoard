@@ -28,7 +28,7 @@ const AssignCandidateDialog = ({ job, open, onClose, onCandidateJob }: AssignCan
     if (!isEmailValid) return showError('Format email invalide');
     if (wallet && !isWalletValid) return showError('Format wallet invalide (0x...)');
 
-    onCandidateJob({ id: job.id, candidatNom: nom, candidatMail: mail, candidatWallet: wallet });
+    onCandidateJob({ id: job.id, candidateName: nom, candidateMail: mail, candidateWallet: wallet });
     toast.success('Candidature envoyée avec succès !', {
       style: {
         background: '#7c3aed',

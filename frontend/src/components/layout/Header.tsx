@@ -1,11 +1,9 @@
 import { Wallet } from 'lucide-react';
 import { Button } from '../ui/button';
 import CreateJobDialog from '../job/CreateJobDialog';
+import type { JobDialogProps } from '../job';
 
-const Header = () => {
-  const onCreateJob = (newJob: { author: string; description: string; dailyRate: number }) => {
-    console.log('Creating job:', newJob);
-  };
+const Header = ({ onCreateJob }: JobDialogProps) => {
   return (
     <header className="sticky top-0 bg-slate-900 z-50 py-8">
       <div className="max-w-7xl mx-auto mb-8">

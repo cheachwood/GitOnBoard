@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { Label } from '../ui/label';
-import { JOB_TYPE_OPTIONS, type ChangeStatusDialogProps, type JobStatus, type JobTypeValue } from '.';
+import { JOB_TYPE_OPTIONS, type ChangeStatusDialogProps, type JobStatus } from '.';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
 
@@ -22,11 +22,7 @@ const ChangeStatusDialog = ({ job, open, onClose, onStatusChanged }: ChangeStatu
       return;
     }
 
-    const updatedJob = {
-      ...job, // Copie toutes les propriétés de job
-      status: newStatus, // Écrase uniquement le status
-    };
-    onStatusChanged(updatedJob);
+    onStatusChanged(job.id, newStatus);
     toast.success('Offre modifiée avec succès !', {
       style: {
         background: '#7c3aed',

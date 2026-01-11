@@ -28,10 +28,6 @@ export interface Job {
   status: JobStatus;
 }
 
-export interface JobProps {
-  job: Job;
-}
-
 export const statusColors = {
   Open: 'bg-blue-500',
   InProgress: 'bg-yellow-500',
@@ -39,10 +35,24 @@ export const statusColors = {
   Cancelled: 'bg-red-500',
 };
 
+// Dans index.ts
+export interface JobCallbacks {
+  onEditJob: (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => void;
+  onCandidateJob: (candidateJob: { id: number; candidateName: string; candidateMail: string; candidateWallet?: string }) => void;
+  onStatusChanged: (jobId: number, newStatus: JobStatus) => void;
+  onDeleteJob: (jobId: number) => void;
+}
+
 export interface JobListProps {
   jobs: Job[];
   connectedAddress?: string;
   isLoading?: boolean;
+  callbacks: JobCallbacks;
+}
+
+export interface JobProps {
+  job: Job;
+  callbacks: JobCallbacks;
 }
 
 export interface JobDialogProps {
@@ -60,12 +70,12 @@ export interface AssignCandidateDialogProps {
   job: Job;
   open: boolean;
   onClose: () => void;
-  onCandidateJob: (candidateJob: { id: number; candidatNom: string; candidatMail: string; candidatWallet?: string }) => void;
+  onCandidateJob: (candidateJob: { id: number; candidateName: string; candidateMail: string; candidateWallet?: string }) => void;
 }
 
 export interface ChangeStatusDialogProps {
   job: Job;
   open: boolean;
   onClose: () => void;
-  onStatusChanged: (job: Job) => void;
+  onStatusChanged: (jobId: number, newStatus: JobStatus) => void;
 }
