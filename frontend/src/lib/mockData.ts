@@ -13,7 +13,7 @@ export const MOCK_JOBS: Job[] = [
     },
     isActive: true,
     creationDate: 1704638400000,
-    isOwner: true,
+    isOwner: false,
     status: 'Open',
   },
   {
@@ -44,7 +44,7 @@ export const MOCK_JOBS: Job[] = [
     isActive: false,
     creationDate: 1735651200000,
     isOwner: true,
-    status: 'Completed',
+    status: 'Open',
   },
   {
     id: 103,
