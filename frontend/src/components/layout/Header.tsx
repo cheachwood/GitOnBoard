@@ -1,5 +1,3 @@
-import { Wallet } from 'lucide-react';
-import { Button } from '../ui/button';
 import CreateJobDialog from '../job/CreateJobDialog';
 import type { JobDialogProps } from '../job';
 
@@ -14,10 +12,9 @@ const Header = ({ onCreateJob }: JobDialogProps) => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <Button className="bg-purple-600 text-white hover:bg-purple-700">
-              <Wallet className="mr-2 w-5 h-5" />
-              Connect Wallet
-            </Button>
+            {/* Bouton AppKit */}
+            <appkit-button />
+
             <CreateJobDialog onCreateJob={onCreateJob} />
           </div>
         </div>

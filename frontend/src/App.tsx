@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Toaster } from 'sonner';
 import type { Job, JobCallbacks, JobStatus } from './components/job';
 import { MOCK_JOBS } from './lib/mockData';
-
+import './lib/appkit';
 const queryClient = new QueryClient();
 
 function App() {
