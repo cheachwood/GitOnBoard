@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { config } from './lib/wagmi';
+
 import Header from './components/layout/Header';
 import JobList from './components/job/JobList';
 import { useEffect, useState } from 'react';
@@ -92,6 +93,7 @@ function App() {
           <JobList jobs={jobs} connectedAddress={connectedAddress} isLoading={isLoading} callbacks={jobCallbacks} />
           <Toaster position="top-center" theme="dark" />
         </div>
+
       </QueryClientProvider>
     </WagmiProvider>
   );
