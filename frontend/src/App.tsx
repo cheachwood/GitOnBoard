@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { config } from './lib/wagmi';
-
+import { useConnection } from 'wagmi';
 import Header from './components/layout/Header';
 import JobList from './components/job/JobList';
 import { useEffect, useState } from 'react';
@@ -9,12 +9,14 @@ import { Toaster } from 'sonner';
 import type { Job, JobCallbacks, JobStatus } from './components/job';
 import { MOCK_JOBS } from './lib/mockData';
 import './lib/appkit';
+
 const queryClient = new QueryClient();
 
-function App() {
+// Composant qui utilise les hooks Wagmi (doit être DANS WagmiProvider)
+function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [jobs, setJobs] = useState<Job[]>(MOCK_JOBS);
-  const [connectedAddress] = useState<string>('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb');
+  const { address, isConnected } = useConnection();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -40,17 +42,11 @@ function App() {
       status: 'Open',
     };
 
-    setJobs([...jobs, newJob]); // ✅ Nouveau tableau
+    setJobs([...jobs, newJob]);
   };
 
   const handleEditJob = (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => {
-    setJobs(
-      jobs.map((jobToUpdate) =>
-        jobToUpdate.id === updatedJob.id
-          ? { ...jobToUpdate, ...updatedJob } // Écrase les propriétés modifiées
-          : jobToUpdate
-      )
-    );
+    setJobs(jobs.map((jobToUpdate) => (jobToUpdate.id === updatedJob.id ? { ...jobToUpdate, ...updatedJob } : jobToUpdate)));
   };
 
   const handleDeleteJob = (jobId: number) => {
@@ -86,14 +82,28 @@ function App() {
   };
 
   return (
+    <div className="min-h-screen bg-slate-900">
+      <Header onCreateJob={handleCreateJob} />
+
+      {isConnected && address ? (
+        <JobList jobs={jobs} isLoading={isLoading} callbacks={jobCallbacks} />
+      ) : (
+        <div className="text-center text-gray-400 mt-20">
+          <p>Connecte ton wallet pour voir les offres</p>
+        </div>
+      )}
+
+      <Toaster position="top-center" theme="dark" />
+    </div>
+  );
+}
+
+// Composant App qui wrap tout avec les providers
+function App() {
+  return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-slate-900">
-          <Header onCreateJob={handleCreateJob} />
-          <JobList jobs={jobs} connectedAddress={connectedAddress} isLoading={isLoading} callbacks={jobCallbacks} />
-          <Toaster position="top-center" theme="dark" />
-        </div>
-
+        <AppContent />
       </QueryClientProvider>
     </WagmiProvider>
   );

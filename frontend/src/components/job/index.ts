@@ -45,7 +45,6 @@ export interface JobCallbacks {
 
 export interface JobListProps {
   jobs: Job[];
-  connectedAddress?: string;
   isLoading?: boolean;
   callbacks: JobCallbacks;
 }
