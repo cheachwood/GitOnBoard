@@ -12,5 +12,6 @@
     "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["./hardhat.config.ts", "./scripts", "./test", "./ignition", "./types"],
+  "exclude": ["node_modules"],
   "files": ["./hardhat.config.ts"]
 }
