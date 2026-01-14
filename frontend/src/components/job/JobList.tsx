@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Skeleton } from '../ui/skeleton';
 import JobCard from './JobCard';
 
-const JobList = ({ jobs, connectedAddress, isLoading, callbacks }: JobListProps) => {
+const JobList = ({ jobs, isLoading, callbacks }: JobListProps) => {
   const [jobType, setJobType] = useState('all');
   const filteredJobs = jobType === 'all' ? jobs : jobs.filter((job) => job.status === jobType);
 
@@ -16,12 +16,6 @@ const JobList = ({ jobs, connectedAddress, isLoading, callbacks }: JobListProps)
         <Skeleton className="h-96 rounded-xl bg-gray-700" />
       </div>
     );
-  }
-  if (connectedAddress === '') {
-    return <div className="text-center text-gray-400 text-xl py-16">Veuillez vous connecter pour interagir avec l'application!</div>;
-  }
-  if (jobs.length === 0) {
-    return <div className="text-center text-gray-400 text-xl py-16">Il n'y a actuellement aucune offre à vous proposer!</div>;
   }
 
   return (
