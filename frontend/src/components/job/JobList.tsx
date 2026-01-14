@@ -5,7 +5,6 @@ import { Skeleton } from '../ui/skeleton';
 import JobCard from './JobCard';
 
 const JobList = ({ jobs, isLoading, callbacks }: JobListProps) => {
-  console.log('isLoading:', isLoading);
   const [jobType, setJobType] = useState('all');
   const filteredJobs = jobType === 'all' ? jobs : jobs.filter((job) => job.status === jobType);
 
