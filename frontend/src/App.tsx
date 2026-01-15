@@ -9,8 +9,6 @@ import { Toaster } from 'sonner';
 import type { JobCallbacks, JobStatus } from './components/job';
 import { useJobBoard } from './hooks/useJobBoard';
 import './lib/appkit';
-import { useReadContract } from 'wagmi';
-import { JOB_BOARD_ADDRESS, JOB_BOARD_ABI, CHAIN_ID } from './lib/contracts';
 
 const queryClient = new QueryClient();
 
@@ -18,17 +16,17 @@ const queryClient = new QueryClient();
 function AppContent() {
   const { address, isConnected } = useConnection();
 
-  // ✅ Hook personnalisé pour lire les jobs
-  const { jobs, isLoading, error } = useJobBoard();
+  // Hook personnalisé pour gérer les jobs
+  const { jobs, isLoading, error, createJob, updateJob, assignCandidate, changeJobStatus, toggleJobActive } = useJobBoard(address);
 
-  // 🔍 Logs de debug
+  // Logs de debug
   console.log('🔌 Connected:', isConnected);
   console.log('👤 Address:', address);
   console.log('📦 Jobs from contract:', jobs);
   console.log('⏳ Loading:', isLoading);
   console.log('❌ Error:', error);
 
-  // UI loading (garde pour l'instant)
+  // UI loading
   const [isLoadingUI, setIsLoadingUI] = useState(true);
 
   useEffect(() => {
@@ -38,25 +36,32 @@ function AppContent() {
     return () => clearTimeout(timer);
   }, []);
 
-  // ✅ Handlers temporaires (juste des logs pour l'instant)
+  // Handlers
   const handleCreateJob = (newJobData: { author: string; description: string; dailyRate: number }) => {
-    console.log('TODO: Create job on-chain', newJobData);
+    createJob(newJobData.dailyRate, newJobData.description);
   };
 
   const handleEditJob = (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => {
-    console.log('TODO: Edit job on-chain', updatedJob);
+    updateJob(updatedJob.id, updatedJob.dailyRate, updatedJob.description);
   };
 
   const handleDeleteJob = (jobId: number) => {
-    console.log('TODO: Delete job on-chain', jobId);
+    toggleJobActive(jobId);
   };
 
   const handleCandidateJob = (candidateJob: { id: number; candidateName: string; candidateMail: string; candidateWallet?: string }) => {
-    console.log('TODO: Assign candidate on-chain', candidateJob);
+    assignCandidate(candidateJob.id, candidateJob.candidateName, candidateJob.candidateMail);
   };
 
   const handleStatusChanged = (jobId: number, newStatus: JobStatus) => {
-    console.log('TODO: Change status on-chain', jobId, newStatus);
+    // Convertir le status string en number pour le contrat
+    const statusMap: Record<JobStatus, number> = {
+      Open: 0,
+      InProgress: 1,
+      Completed: 2,
+    };
+
+    changeJobStatus(jobId, statusMap[newStatus]);
   };
 
   const jobCallbacks: JobCallbacks = {

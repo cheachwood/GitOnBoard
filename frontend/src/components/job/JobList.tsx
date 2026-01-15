@@ -6,7 +6,7 @@ import JobCard from './JobCard';
 
 const JobList = ({ jobs, isLoading, callbacks }: JobListProps) => {
   const [jobType, setJobType] = useState('all');
-  const filteredJobs = jobType === 'all' ? jobs : jobs.filter((job) => job.status === jobType);
+  const filteredJobs = jobType === 'all' ? jobs.filter((job) => job.isActive) : jobs.filter((job) => job.status === jobType && job.isActive);
 
   if (isLoading) {
     return (
