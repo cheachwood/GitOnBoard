@@ -26,16 +26,6 @@ function AppContent() {
   console.log('⏳ Loading:', isLoading);
   console.log('❌ Error:', error);
 
-  // UI loading
-  const [isLoadingUI, setIsLoadingUI] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoadingUI(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
   // Handlers
   const handleCreateJob = (newJobData: { author: string; description: string; dailyRate: number }) => {
     createJob(newJobData.dailyRate, newJobData.description);
