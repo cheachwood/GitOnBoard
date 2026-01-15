@@ -534,4 +534,27 @@ export const JOB_BOARD_ABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    inputs: [
+      {
+        internalType: 'uint32',
+        name: 'jobId',
+        type: 'uint32',
+      },
+      {
+        internalType: 'uint32',
+        name: 'dailyRate',
+        type: 'uint32',
+      },
+      {
+        internalType: 'string',
+        name: 'description',
+        type: 'string',
+      },
+    ],
+    name: 'updateJob',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const;

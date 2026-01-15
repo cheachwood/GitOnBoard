@@ -294,4 +294,19 @@ contract JobBoard is Ownable {
 
         emit JobToggled(jobId, jobs[jobId].isActive, msg.sender);
     }
+
+    // Function to update a job's details
+    // @param jobId The ID of the job
+    // @param dailyRate The new daily rate
+    // @param description The new description
+    function updateJob(
+        uint32 jobId,
+        uint32 dailyRate,
+        string calldata description
+    ) external jobDoesExist(jobId) onlyAuthor(jobId) {
+        jobs[jobId].dailyRate = dailyRate;
+        jobs[jobId].description = description;
+
+        emit JobUpdated(jobId, jobs[jobId].status, msg.sender);
+    }
 }
