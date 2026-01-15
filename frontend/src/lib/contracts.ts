@@ -1,6 +1,7 @@
 // Adresse du contrat déployé
 // TODO: Remplacer par l'adresse après déploiement
-export const JOB_BOARD_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0x0000000000000000000000000000000000000000';
+export const JOB_BOARD_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+export const CHAIN_ID = Number(import.meta.env.VITE_CHAIN_ID) || 31337;
 
 // ABI du smart contract JobBoard
 export const JOB_BOARD_ABI = [
