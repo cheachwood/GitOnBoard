@@ -9,14 +9,29 @@ import { Toaster } from 'sonner';
 import type { Job, JobCallbacks, JobStatus } from './components/job';
 import { MOCK_JOBS } from './lib/mockData';
 import './lib/appkit';
+import { useReadContract } from 'wagmi';
+import { JOB_BOARD_ADDRESS, JOB_BOARD_ABI, CHAIN_ID } from './lib/contracts';
 
 const queryClient = new QueryClient();
 
 // Composant qui utilise les hooks Wagmi (doit être DANS WagmiProvider)
 function AppContent() {
+  const { address, isConnected } = useConnection();
+
+  // NOUVEAU : Lecture du contrat (juste pour tester)
+  const { data: contractJobs, isLoading: isLoadingContract } = useReadContract({
+    address: JOB_BOARD_ADDRESS,
+    abi: JOB_BOARD_ABI,
+    functionName: 'getAllJobs',
+    chainId: CHAIN_ID,
+  });
+
+  // Log pour voir les données
+  console.log('📦 Données du contrat:', contractJobs);
+  console.log('⏳ Loading:', isLoadingContract);
+
   const [isLoading, setIsLoading] = useState(true);
   const [jobs, setJobs] = useState<Job[]>(MOCK_JOBS);
-  const { address, isConnected } = useConnection();
 
   useEffect(() => {
     const timer = setTimeout(() => {
