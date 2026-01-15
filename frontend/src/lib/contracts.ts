@@ -330,6 +330,16 @@ export const JOB_BOARD_ABI = [
           },
           {
             internalType: 'string',
+            name: 'candidateName',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'candidateEmail',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
             name: 'description',
             type: 'string',
           },
@@ -382,6 +392,16 @@ export const JOB_BOARD_ABI = [
             internalType: 'address',
             name: 'candidate',
             type: 'address',
+          },
+          {
+            internalType: 'string',
+            name: 'candidateName',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'candidateEmail',
+            type: 'string',
           },
           {
             internalType: 'string',
@@ -443,6 +463,16 @@ export const JOB_BOARD_ABI = [
             internalType: 'address',
             name: 'candidate',
             type: 'address',
+          },
+          {
+            internalType: 'string',
+            name: 'candidateName',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'candidateEmail',
+            type: 'string',
           },
           {
             internalType: 'string',

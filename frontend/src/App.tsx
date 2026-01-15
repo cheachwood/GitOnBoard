@@ -6,8 +6,8 @@ import Header from './components/layout/Header';
 import JobList from './components/job/JobList';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'sonner';
-import type { Job, JobCallbacks, JobStatus } from './components/job';
-import { MOCK_JOBS } from './lib/mockData';
+import type { JobCallbacks, JobStatus } from './components/job';
+import { useJobBoard } from './hooks/useJobBoard';
 import './lib/appkit';
 import { useReadContract } from 'wagmi';
 import { JOB_BOARD_ADDRESS, JOB_BOARD_ABI, CHAIN_ID } from './lib/contracts';
@@ -18,75 +18,45 @@ const queryClient = new QueryClient();
 function AppContent() {
   const { address, isConnected } = useConnection();
 
-  // NOUVEAU : Lecture du contrat (juste pour tester)
-  const { data: contractJobs, isLoading: isLoadingContract } = useReadContract({
-    address: JOB_BOARD_ADDRESS,
-    abi: JOB_BOARD_ABI,
-    functionName: 'getAllJobs',
-    chainId: CHAIN_ID,
-  });
+  // ✅ Hook personnalisé pour lire les jobs
+  const { jobs, isLoading, error } = useJobBoard();
 
-  // Log pour voir les données
-  console.log('📦 Données du contrat:', contractJobs);
-  console.log('⏳ Loading:', isLoadingContract);
+  // 🔍 Logs de debug
+  console.log('🔌 Connected:', isConnected);
+  console.log('👤 Address:', address);
+  console.log('📦 Jobs from contract:', jobs);
+  console.log('⏳ Loading:', isLoading);
+  console.log('❌ Error:', error);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [jobs, setJobs] = useState<Job[]>(MOCK_JOBS);
+  // UI loading (garde pour l'instant)
+  const [isLoadingUI, setIsLoadingUI] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setIsLoadingUI(false);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
+  // ✅ Handlers temporaires (juste des logs pour l'instant)
   const handleCreateJob = (newJobData: { author: string; description: string; dailyRate: number }) => {
-    const newJob: Job = {
-      id: jobs.length > 0 ? Math.max(...jobs.map((j) => j.id)) + 1 : 1,
-      author: newJobData.author,
-      description: newJobData.description,
-      dailyRate: newJobData.dailyRate,
-      candidat: {
-        candidateName: '',
-        candidateMail: '',
-        candidateWallet: '',
-      },
-      isActive: true,
-      creationDate: Date.now(),
-      isOwner: true,
-      status: 'Open',
-    };
-
-    setJobs([...jobs, newJob]);
+    console.log('TODO: Create job on-chain', newJobData);
   };
 
   const handleEditJob = (updatedJob: { id: number; author: string; description: string; dailyRate: number }) => {
-    setJobs(jobs.map((jobToUpdate) => (jobToUpdate.id === updatedJob.id ? { ...jobToUpdate, ...updatedJob } : jobToUpdate)));
+    console.log('TODO: Edit job on-chain', updatedJob);
   };
 
   const handleDeleteJob = (jobId: number) => {
-    setJobs(jobs.filter((job) => job.id !== jobId));
+    console.log('TODO: Delete job on-chain', jobId);
   };
 
   const handleCandidateJob = (candidateJob: { id: number; candidateName: string; candidateMail: string; candidateWallet?: string }) => {
-    setJobs(
-      jobs.map((jobToUpdate) =>
-        jobToUpdate.id === candidateJob.id
-          ? {
-              ...jobToUpdate,
-              candidat: {
-                candidateName: candidateJob.candidateName,
-                candidateMail: candidateJob.candidateMail,
-                candidateWallet: candidateJob.candidateWallet,
-              },
-            }
-          : jobToUpdate
-      )
-    );
+    console.log('TODO: Assign candidate on-chain', candidateJob);
   };
 
   const handleStatusChanged = (jobId: number, newStatus: JobStatus) => {
-    setJobs(jobs.map((job) => (job.id === jobId ? { ...job, status: newStatus } : job)));
+    console.log('TODO: Change status on-chain', jobId, newStatus);
   };
 
   const jobCallbacks: JobCallbacks = {
