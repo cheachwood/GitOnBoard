@@ -63,6 +63,8 @@ contract JobBoard is Ownable {
         address author; // 20 octets| author address
         // --- SLOT 1 (Total: 20 / 32 octets utilisés) ---
         address candidate; // 20 octets| freelancer address
+        string candidateName;
+        string candidateEmail;
         // --- SLOT 2 (Dynamique) ---
         string description; // description of the job
     }
@@ -135,10 +137,7 @@ contract JobBoard is Ownable {
     // Function to create a new job
     // @param dailyRate The daily rate for the job
     // @param description The description of the job
-    function createJob(
-        uint32 dailyRate,
-        string calldata description
-    ) external {
+    function createJob(uint32 dailyRate, string calldata description) external {
         _jobIdCounter++;
         jobs[_jobIdCounter] = Job({
             id: uint32(_jobIdCounter),
@@ -148,6 +147,8 @@ contract JobBoard is Ownable {
             isActive: true,
             author: msg.sender,
             candidate: address(0),
+            candidateName: "",
+            candidateEmail: "",
             description: description
         });
         emit NewJob(_jobIdCounter, msg.sender, dailyRate, description);
@@ -179,6 +180,8 @@ contract JobBoard is Ownable {
         }
 
         jobs[jobId].candidate = msg.sender;
+        jobs[jobId].candidateName = candidateName;
+        jobs[jobId].candidateEmail = candidateEmail;
         emit CandidateAssigned(
             jobId,
             msg.sender,
@@ -263,8 +266,7 @@ contract JobBoard is Ownable {
         if (currentStatus == Status.Open) {
             // "Si le nouveau statut n'est PAS InProgress ET n'est PAS Cancelled, alors c'est invalide"
             if (
-                newStatus != Status.InProgress &&
-                newStatus != Status.Cancelled
+                newStatus != Status.InProgress && newStatus != Status.Cancelled
             ) {
                 revert InvalidTransitionFromOpen();
             }
