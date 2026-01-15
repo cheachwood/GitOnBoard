@@ -9,6 +9,8 @@ import { Toaster } from 'sonner';
 import type { JobCallbacks, JobStatus } from './components/job';
 import { useJobBoard } from './hooks/useJobBoard';
 import './lib/appkit';
+import { useReadContract } from 'wagmi';
+import { JOB_BOARD_ADDRESS, JOB_BOARD_ABI, CHAIN_ID } from './lib/contracts';
 
 const queryClient = new QueryClient();
 
