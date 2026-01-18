@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useReadContract, useWriteContract } from 'wagmi';
 import { JOB_BOARD_ADDRESS, JOB_BOARD_ABI, CHAIN_ID } from '../lib/contracts';
 import type { Job, JobStatus } from '../components/job';
@@ -32,12 +32,14 @@ const formatStatus = (statusEnum: number): JobStatus => {
 };
 
 export const useJobBoard = (connectedAddress?: `0x${string}`) => {
+  const queryClient = useQueryClient();
+
   // Lecture des jobs
   const {
     data: contractJobs,
     isLoading,
     error,
-    refetch: refetchAll,
+    queryKey,
   } = useReadContract({
     address: JOB_BOARD_ADDRESS,
     abi: JOB_BOARD_ABI,
@@ -60,7 +62,7 @@ export const useJobBoard = (connectedAddress?: `0x${string}`) => {
   // Hook pour toggleActive
   const { mutate: writeContractToggle, isPending: isToggling, isSuccess: isToggleSuccess, isError: isToggleError, error: toggleError } = useWriteContract();
 
-  console.log('📦 Raw contract data:', contractJobs);
+  console.log('Raw contract data:', contractJobs);
 
   // Transformer les données
   const jobs: Job[] = contractJobs
@@ -81,51 +83,11 @@ export const useJobBoard = (connectedAddress?: `0x${string}`) => {
       }))
     : [];
 
-  // Recharger automatiquement après création réussie
-  useEffect(() => {
-    if (isCreateSuccess) {
-      console.log('🔄 Reloading jobs after successful creation...');
-      refetchAll();
-    }
-  }, [isCreateSuccess, refetchAll]);
-
-  // Recharger après modification réussie
-  useEffect(() => {
-    if (isUpdateSuccess) {
-      console.log('🔄 Reloading jobs after successful update...');
-      refetchAll();
-    }
-  }, [isUpdateSuccess, refetchAll]);
-
-  // Recharger après assignation réussie
-  useEffect(() => {
-    if (isAssignSuccess) {
-      console.log('🔄 Reloading jobs after successful assignment...');
-      refetchAll();
-    }
-  }, [isAssignSuccess, refetchAll]);
-
-  // Recharger après changement de statut réussi
-  useEffect(() => {
-    if (isChangeStatusSuccess) {
-      console.log('🔄 Reloading jobs after successful status change...');
-      refetchAll();
-    }
-  }, [isChangeStatusSuccess, refetchAll]);
-
-  // Recharger après toggle réussi
-  useEffect(() => {
-    if (isToggleSuccess) {
-      console.log('🔄 Reloading jobs after successful toggle...');
-      refetchAll();
-    }
-  }, [isToggleSuccess, refetchAll]);
-
   // Fonction pour créer un job
   const createJob = (dailyRate: number, description: string) => {
-    console.log('🚀 Calling createJob with:', { dailyRate, description });
-    console.log('📍 Contract address:', JOB_BOARD_ADDRESS);
-    console.log('⛓️  Chain ID:', CHAIN_ID);
+    console.log('Calling createJob with:', { dailyRate, description });
+    console.log('Contract address:', JOB_BOARD_ADDRESS);
+    console.log('Chain ID:', CHAIN_ID);
 
     writeContractCreate(
       {
@@ -137,20 +99,21 @@ export const useJobBoard = (connectedAddress?: `0x${string}`) => {
       },
       {
         onSuccess: (data) => {
-          console.log('✅ Transaction success:', data);
+          console.log('Transaction success:', data);
+          queryClient.invalidateQueries({ queryKey });
         },
         onError: (error) => {
-          console.error('❌ Transaction error:', error);
+          console.error('Transaction error:', error);
         },
-      }
+      },
     );
 
-    console.log('📤 writeContract called');
+    console.log('writeContract called');
   };
 
   // Fonction pour modifier un job
   const updateJob = (jobId: number, dailyRate: number, description: string) => {
-    console.log('✏️ Updating job:', { jobId, dailyRate, description });
+    console.log('Updating job:', { jobId, dailyRate, description });
 
     writeContractUpdate(
       {
@@ -161,15 +124,18 @@ export const useJobBoard = (connectedAddress?: `0x${string}`) => {
         chainId: CHAIN_ID,
       },
       {
-        onSuccess: (data) => console.log('✅ Update success:', data),
-        onError: (error) => console.error('❌ Update error:', error),
-      }
+        onSuccess: (data) => {
+          console.log('Update success:', data);
+          queryClient.invalidateQueries({ queryKey });
+        },
+        onError: (error) => console.error('Update error:', error),
+      },
     );
   };
 
   // Fonction pour assigner un candidat
   const assignCandidate = (jobId: number, candidateName: string, candidateEmail: string) => {
-    console.log('👤 Assigning candidate:', { jobId, candidateName, candidateEmail });
+    console.log('Assigning candidate:', { jobId, candidateName, candidateEmail });
 
     writeContractAssign(
       {
@@ -180,15 +146,18 @@ export const useJobBoard = (connectedAddress?: `0x${string}`) => {
         chainId: CHAIN_ID,
       },
       {
-        onSuccess: (data) => console.log('✅ Assign success:', data),
-        onError: (error) => console.error('❌ Assign error:', error),
-      }
+        onSuccess: (data) => {
+          console.log('Assign success:', data);
+          queryClient.invalidateQueries({ queryKey });
+        },
+        onError: (error) => console.error('Assign error:', error),
+      },
     );
   };
 
   // Fonction pour changer le statut
   const changeJobStatus = (jobId: number, newStatus: number) => {
-    console.log('🔄 Changing status:', { jobId, newStatus });
+    console.log('Changing status:', { jobId, newStatus });
 
     writeContractChangeStatus(
       {
@@ -199,15 +168,18 @@ export const useJobBoard = (connectedAddress?: `0x${string}`) => {
         chainId: CHAIN_ID,
       },
       {
-        onSuccess: (data) => console.log('✅ Status change success:', data),
-        onError: (error) => console.error('❌ Status change error:', error),
-      }
+        onSuccess: (data) => {
+          console.log('Status change success:', data);
+          queryClient.invalidateQueries({ queryKey });
+        },
+        onError: (error) => console.error('Status change error:', error),
+      },
     );
   };
 
   // Fonction pour toggle active
   const toggleJobActive = (jobId: number) => {
-    console.log('🔀 Toggling active:', { jobId });
+    console.log('Toggling active:', { jobId });
 
     writeContractToggle(
       {
@@ -218,9 +190,12 @@ export const useJobBoard = (connectedAddress?: `0x${string}`) => {
         chainId: CHAIN_ID,
       },
       {
-        onSuccess: (data) => console.log('✅ Toggle success:', data),
-        onError: (error) => console.error('❌ Toggle error:', error),
-      }
+        onSuccess: (data) => {
+          console.log('Toggle success:', data);
+          queryClient.invalidateQueries({ queryKey });
+        },
+        onError: (error) => console.error('Toggle error:', error),
+      },
     );
   };
 

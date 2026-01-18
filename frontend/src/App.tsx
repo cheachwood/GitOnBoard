@@ -4,7 +4,6 @@ import { config } from './lib/wagmi';
 import { useConnection } from 'wagmi';
 import Header from './components/layout/Header';
 import JobList from './components/job/JobList';
-import { useEffect, useState } from 'react';
 import { Toaster } from 'sonner';
 import type { JobCallbacks, JobStatus } from './components/job';
 import { useJobBoard } from './hooks/useJobBoard';
@@ -20,11 +19,11 @@ function AppContent() {
   const { jobs, isLoading, error, createJob, updateJob, assignCandidate, changeJobStatus, toggleJobActive } = useJobBoard(address);
 
   // Logs de debug
-  console.log('🔌 Connected:', isConnected);
-  console.log('👤 Address:', address);
-  console.log('📦 Jobs from contract:', jobs);
-  console.log('⏳ Loading:', isLoading);
-  console.log('❌ Error:', error);
+  console.log('Connected:', isConnected);
+  console.log('Address:', address);
+  console.log('Jobs from contract:', jobs);
+  console.log('Loading:', isLoading);
+  console.log('Error:', error);
 
   // Handlers
   const handleCreateJob = (newJobData: { author: string; description: string; dailyRate: number }) => {
@@ -49,6 +48,7 @@ function AppContent() {
       Open: 0,
       InProgress: 1,
       Completed: 2,
+      Cancelled: 3,
     };
 
     changeJobStatus(jobId, statusMap[newStatus]);

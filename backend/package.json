@@ -27,7 +27,6 @@
     "test:watch": "node --import tsx --test --watch",
     "test:coverage": "node --import tsx --test --experimental-test-coverage test/**/*.test.ts",
     "deploy": "hardhat ignition deploy ignition/modules/JobBoard.ts --network localhost",
-    "seed": "hardhat run scripts/seed.ts --network localhost",
-    "setup": "hardhat run scripts/deploy.ts --network localhost && hardhat run scripts/seed.ts --network localhost"
+    "seed": "hardhat run scripts/seed.ts --network localhost"
   }
 }
