@@ -26,6 +26,8 @@ const formatStatus = (statusEnum: number): JobStatus => {
       return 'InProgress';
     case 2:
       return 'Completed';
+    case 3:
+      return 'Cancelled';
     default:
       return 'Open';
   }
